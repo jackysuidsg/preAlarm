@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Pre Alarm V3.5</title>
+<title>Pre Alarm V3.8</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
@@ -33,7 +33,7 @@ button{color:inherit}
 .upload strong{display:block;font-size:13px;margin-bottom:2px}.upload span{display:block;color:var(--muted);font-size:12px;line-height:1.35}.fileMeta{margin-top:8px;color:var(--muted);font-size:12px;line-height:1.5}
 .stationBar{display:flex;flex-wrap:wrap;gap:8px}.stationBtn{border:1px solid rgba(255,255,255,.13);background:#0e1116;border-radius:999px;padding:7px 11px;font-size:12px;cursor:pointer}.stationBtn:hover{border-color:rgba(255,255,255,.28)}.stationBtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
 .fieldRow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}.field input,.search{width:100%;border:1px solid rgba(255,255,255,.12);background:#0d1015;color:var(--text);border-radius:10px;padding:9px 10px;outline:none}.field input:focus,.search:focus{border-color:rgba(101,168,255,.6)}
-.stationInputs{display:flex;flex-direction:column;gap:7px;margin-top:10px}.stationHeader,.stationInput{display:grid;grid-template-columns:55px 92px 1fr 78px;align-items:center;gap:8px}.stationHeader{font-size:10px;color:var(--muted);padding:0 3px}.stationInput{border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:7px 8px;background:rgba(255,255,255,.018)}.stationInput b{font-size:12px}.stationInput .autoAdd{font-size:11px;color:#ffd084;font-variant-numeric:tabular-nums}.stationInput input{width:100%;min-width:0;border:1px solid rgba(255,255,255,.12);background:#0d1015;border-radius:8px;padding:7px 8px}.stationInput .forecastMini{text-align:right;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.freightBox{margin-top:13px;padding:11px;border:1px solid rgba(255,255,255,.09);border-radius:11px;background:rgba(255,255,255,.018)}.freightBox summary{cursor:pointer;font-weight:750;font-size:12px;color:#d8dce5}.freightBox label{font-size:11px;color:var(--muted)}.freightBox input[type="number"]{width:115px;padding:8px;background:#0d1015;color:var(--text);border:1px solid rgba(255,255,255,.2);border-radius:8px}.freightInfo{color:var(--muted);line-height:1.5;font-size:11px;margin-top:8px}.freightControl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0 0}.stationInputs{display:flex;flex-direction:column;gap:7px;margin-top:10px}.stationHeader,.stationInput{display:grid;grid-template-columns:55px 92px 1fr 78px;align-items:center;gap:8px}.stationHeader{font-size:10px;color:var(--muted);padding:0 3px}.stationInput{border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:7px 8px;background:rgba(255,255,255,.018)}.stationInput b{font-size:12px}.stationInput .autoAdd{font-size:11px;color:#ffd084;font-variant-numeric:tabular-nums}.stationInput input{width:100%;min-width:0;border:1px solid rgba(255,255,255,.12);background:#0d1015;border-radius:8px;padding:7px 8px}.stationInput .forecastMini{text-align:right;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
 .btn{border:1px solid rgba(255,255,255,.13);background:#10141a;border-radius:11px;padding:9px 12px;cursor:pointer;transition:.15s;font-size:12px;font-weight:700}.btn:hover{border-color:rgba(255,255,255,.28);transform:translateY(-1px)}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn.primary:hover{background:var(--accent2)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.btnRow{display:flex;gap:8px;flex-wrap:wrap}.btnRow .primary{flex:1}
 .message{margin-top:10px;font-size:12px;line-height:1.45;color:var(--muted)}.message.warn{color:#ffd291}.message.good{color:#b9ffd2}.message.bad{color:#ffb7b7}
 .kpis{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:10px;margin-bottom:15px}.kpi{border:1px solid var(--line2);background:var(--panel2);border-radius:13px;padding:13px}.kpi .name{font-size:11px;color:var(--muted);margin-bottom:8px}.kpi .value{font-size:22px;font-weight:800;letter-spacing:-.3px}.kpi .subv{font-size:11px;color:var(--muted);margin-top:3px}.kpi.alert .value{color:#ffd084}
@@ -43,14 +43,36 @@ button{color:inherit}
 .footerNote{margin-top:10px;color:var(--muted);font-size:11px;line-height:1.45}.thBi{display:flex;flex-direction:column;gap:2px;line-height:1.14}.thBi span:last-child{font-size:10px;font-weight:650;color:#c0c7d2}.sectionTitle .es{display:block;font-size:10px;letter-spacing:.06em;margin-top:2px;color:#7f8998;text-transform:none}.hidden{display:none!important}.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;z-index:999;opacity:0;pointer-events:none;transition:.15s}.overlay.show{opacity:1}.overlayBox{border:1px dashed rgba(255,255,255,.4);border-radius:18px;padding:28px 40px;background:#11151b;font-weight:800}
 @media(max-width:1050px){.grid{grid-template-columns:1fr}.sidebar{position:static}.kpis{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:680px){.app{padding:16px}.topbar{align-items:center}.brand h1{font-size:22px}.kpis{grid-template-columns:repeat(2,1fr)}.fieldRow{grid-template-columns:1fr}.toolbar{align-items:stretch}.actions{width:100%}.search{flex:1;min-width:0}.badge{display:none}.main,.sidebar{padding:15px}}
+
+/* V3.8 DSP forecast settings */
+.modeChoices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 12px}
+.modeBtn{cursor:pointer;text-align:center;background:#0b0f15;border:1px solid rgba(255,255,255,.13);border-radius:10px;padding:9px 4px;line-height:1.3;font-size:11px;font-weight:750;color:#abb5c4;min-height:48px}
+.modeBtn.active{border-color:var(--accent);background:rgba(229,57,53,.13);color:#fff}
+.modeBtn small{display:block;font-weight:500;color:#9ba4b4;font-size:10px;margin-top:3px}
+.histStatus{font-size:11px;line-height:1.5;color:#b5bdc9;margin-top:8px;overflow-wrap:anywhere}
+.hUpload{font-size:11px;padding:10px;display:flex;align-items:center;justify-content:center;background:#171d26;border:1px dashed rgba(255,255,255,.24);border-radius:9px;cursor:pointer;text-align:center}
+.hUpload:hover{border-color:#ff847d}
+.dspSettings{border:1px solid rgba(255,255,255,.09);border-radius:10px;margin-top:10px;background:#0e1319;max-height:330px;overflow:auto;padding:7px}
+.dspSettings:empty{display:none}
+.dspGroupName{font-size:11px;color:#ffcd93;font-weight:800;padding:9px 5px 5px;border-top:1px solid rgba(255,255,255,.07)}
+.dspGroupName:first-child{border-top:none}
+.dspRow{display:grid;grid-template-columns:minmax(70px,1fr) 65px 70px 58px;gap:5px;align-items:center;padding:6px 4px;border-bottom:1px solid rgba(255,255,255,.035);font-size:11px}
+.dspRow small{display:block;color:#8995a5;font-size:9px;line-height:1.5}
+.dspRow .dspName{overflow-wrap:anywhere}
+.dspRow input{width:100%;background:#080c11;color:#eff2f6;border:1px solid rgba(255,255,255,.19);border-radius:6px;padding:5px;font-size:11px;text-align:right}
+.dspRow .dspProjected{text-align:right;font-variant-numeric:tabular-nums}
+.dspCaption{font-size:10px;color:#96a4b5;line-height:1.55;margin:8px 0 2px}
+.dspPrompt{font-size:11px;color:#98a6b7;padding:9px 5px}
+.historyDetails summary{cursor:pointer;font-size:12px;font-weight:750;margin:12px 0;color:#e1e6ef}
+@media(max-width:430px){.modeChoices{grid-template-columns:1fr}.dspRow{grid-template-columns:minmax(65px,1fr) 52px 62px 56px}}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay"><div class="overlayBox">Drop file to upload</div></div>
 <div class="app">
   <div class="topbar">
-    <div class="brand"><h1>Pre Alarm V3.5</h1><p>ZIP-first smart matching · global proportional forecast · automatic PFC/PFF split</p></div>
-    <div class="badge">V3.5</div>
+    <div class="brand"><h1>Pre Alarm V3.8</h1><p>ZIP-first matching · Global / DSP Dynamic / Manual forecast · MIA F6/F9 · FLL ZIP freight split</p></div>
+    <div class="badge">V3.8</div>
   </div>
 
   <div class="grid">
@@ -83,10 +105,43 @@ button{color:inherit}
         <div class="sectionTitle" style="margin-top:14px">Eligible Stations · current ≥ 3,000<span class="es">Estaciones Elegibles · actual ≥ 3,000</span></div>
         <div class="stationBar" id="stationBar"></div>
         <div id="stationInputs" class="stationInputs"></div>
+        <details class="freightBox" id="fllFreightSettings">
+          <summary>FLL Freight Split · División de Carga FLL</summary>
+          <div class="freightControl">
+            <label><input id="fllFreightEnabled" type="checkbox" checked> Automatically split F21–F26 / Separar rutas F21–F26</label>
+            <label for="fllFreightPercent">Freight % / Porcentaje de carga</label>
+            <input id="fllFreightPercent" type="number" min="0" max="100" step="0.01" value="17.28" inputmode="decimal">
+          </div>
+          <div class="freightInfo" id="fllFreightHelp">Intensity reference: Oct 22, 2026, FLL freight 17.28%. ZIP-specific ratios are from Oct 23 actuals (ZIP 33311 → F24 68.64%). Each ZIP keeps its own parcel total. The final FLL freight percentage may differ when ZIP mix changes. Adjust the intensity only when needed.</div>
+        </details>
       </div>
 
       <div class="section">
-        <div class="sectionTitle">4 · Driver Planning<span class="es">Planificación de Conductores</span></div>
+        <div class="sectionTitle">4 · DSP Allocation Mode<span class="es">Modo de distribución por DSP</span></div>
+        <div class="modeChoices" id="forecastModes" role="group" aria-label="Forecast allocation mode">
+          <button class="modeBtn active" type="button" data-mode="global">Global Proportional<small>Proporcional global</small></button>
+          <button class="modeBtn" type="button" data-mode="dynamic">DSP Dynamic<small>Dinámico por DSP</small></button>
+          <button class="modeBtn" type="button" data-mode="manual">Manual Adjustment<small>Ajuste manual</small></button>
+        </div>
+        <div class="message" id="modeExplanation">Original mode: same growth rate across the DSPs within each station. Exact station Forecast is preserved.</div>
+        <details class="historyDetails" id="historyDetails">
+          <summary>Historical Volume (optional) / Volumen histórico (opcional)</summary>
+          <label class="hUpload" for="historyInput">↥ Upload 2–14 daily Volume files / Subir archivos históricos</label>
+          <input id="historyInput" type="file" multiple accept=".xlsx,.xls,.csv" hidden>
+          <div id="historyStatus" class="histStatus">Dynamic mode learns DSP share trends from 2 or more historical daily files. If there is no history, it uses today's shares (no invented trend).</div>
+          <div class="dspCaption">Select oldest → newest. Files named YYYY-MM-DD are sorted automatically. Mapping must be uploaded first. History stays in this browser session only.</div>
+          <button id="clearHistoryBtn" type="button" class="btn" style="margin-top:8px">Clear history / Borrar historial</button>
+        </details>
+        <details class="historyDetails" id="dspSettingsDetails">
+          <summary>DSP Weights &amp; Fine Tune / Pesos y ajuste de DSP</summary>
+          <div class="dspCaption">Fine Tune (%) changes the DSP's share of the <b>station's additional packages</b>, not its existing packages. 0 = automatic; +20 favors this DSP by 20%. Other DSPs rebalance so station totals never change.</div>
+          <div class="dspSettings" id="dspSettings"></div>
+          <button id="clearDSPBiasBtn" type="button" class="btn" style="margin-top:9px">Reset DSP adjustments / Restablecer ajustes</button>
+        </details>
+      </div>
+
+      <div class="section">
+        <div class="sectionTitle">5 · Driver Planning<span class="es">Planificación de Conductores</span></div>
         <div class="fieldRow">
           <div class="field"><label>Packages / driver</label><input id="driverCap" type="number" value="180" min="1" step="1"></div>
           <div class="field"><label>Rounding</label><input value="Exact total" disabled></div>
@@ -147,7 +202,7 @@ button{color:inherit}
           <tbody id="unmappedBody"></tbody>
         </table>
       </div>
-      <div id="resultNote" class="footerNote">Current Volume is ZIP-first and may change column order/name. Missing Station can be inferred from Mapping when safe; DSP / Route always come from ZIP Mapping. Global added volume follows the original Pre Alarm multiplier, with optional station fine tuning. MIA-PFC/PFF is automatically split using the confirmed fixed route profile.</div>
+      <div id="resultNote" class="footerNote">Current Volume is ZIP-first and may change column order/name. Missing Station can be inferred from Mapping when safe; DSP / Route always come from ZIP Mapping. Station target volume follows the original Pre Alarm multiplier. DSP Dynamic uses historical DSP share changes to divide the station-level addition; manual bias is optional. Without sufficient history Dynamic falls back to the current DSP share. MIA PFF/PFC route profiles were refreshed from Oct 22 actuals (F6 and F9 now PFF). FLL F21–F26 freight uses historical Oct 23 ZIP-level shares; ZIP and station Forecast totals are preserved. Historical percentages are estimates, not guaranteed daily results. MIA PFF now includes F6 and F9 (Oct 22 route mix).</div>
     </main>
   </div>
 </div>
@@ -174,35 +229,42 @@ const DEFAULT_STATIONS=["MIA","FLL","WPB","FPR","SRQ","FTM"];
 const STATION_DISPLAY_MIN=3000;
 
 // MIA-PFC in the regular Current Volume is treated as a combined PFC + PFF pool.
-// This profile was derived from the confirmed 09/11/2026 PFC/PFF route data.
+// This profile was refreshed from the 2026-10-22 MIA actuals; includes PFF F6/F9.
 // The integer weights are used instead of rounded percentages so every split remains exact.
-const MIA_PFC_PFF_PROFILE=[
-  {dsp:"MIA-PFF",route:"F3", weight:1735,zips:["33166","33178"]},
-  {dsp:"MIA-PFF",route:"F4", weight:1283,zips:["33166","33178"]},
-  {dsp:"MIA-PFF",route:"F5", weight:1486,zips:["33166","33195"]},
-  {dsp:"MIA-PFF",route:"F10",weight:1471,zips:["33166","33172","33182","33192","33195"]},
-  {dsp:"MIA-PFF",route:"F11",weight:3014,zips:["33122","33126","33166","33172","33178","33195"]},
-  {dsp:"MIA-PFF",route:"F12",weight:3352,zips:["33122","33126","33191"]},
-  {dsp:"MIA-PFF",route:"F13",weight:1790,zips:["33172"]},
-  {dsp:"MIA-PFF",route:"F14",weight:2964,zips:["33172","33182","33192"]},
-  {dsp:"MIA-PFF",route:"F15",weight:1417,zips:["33172","33178"]},
-  {dsp:"MIA-PFC",route:"M24",weight:1906,zips:["33126","33191","33206"]},
-  {dsp:"MIA-PFC",route:"M25",weight:2260,zips:["33106","33122"]},
-  {dsp:"MIA-PFC",route:"M26",weight:1692,zips:["33172"]},
-  {dsp:"MIA-PFC",route:"M27",weight:28,  zips:["33192"]},
-  {dsp:"MIA-PFC",route:"M28",weight:916, zips:["33182"]},
-  {dsp:"MIA-PFC",route:"M29",weight:2153,zips:["33178"]},
-  {dsp:"MIA-PFC",route:"M30",weight:96,  zips:["33198"]},
-  {dsp:"MIA-PFC",route:"M31",weight:1608,zips:["33166","33178","33195"]},
-  {dsp:"MIA-PFC",route:"M32",weight:84,  zips:["33195"]}
-];
+const MIA_PFC_PFF_PROFILE=[{"dsp":"MIA-PFF","route":"F3","weight":2824,"zips":["33178","33166"]},{"dsp":"MIA-PFF","route":"F4","weight":1303,"zips":["33166","33178"]},{"dsp":"MIA-PFF","route":"F5","weight":2294,"zips":["33166","33195"]},{"dsp":"MIA-PFF","route":"F6","weight":1515,"zips":["33166","33178","33195"]},{"dsp":"MIA-PFF","route":"F9","weight":1440,"zips":["33166","33195"]},{"dsp":"MIA-PFF","route":"F10","weight":2326,"zips":["33172","33166","33195"]},{"dsp":"MIA-PFF","route":"F11","weight":4823,"zips":["33172","33195","33126","33178","33122","33166"]},{"dsp":"MIA-PFF","route":"F12","weight":4990,"zips":["33126","33122","33191"]},{"dsp":"MIA-PFF","route":"F13","weight":3175,"zips":["33172"]},{"dsp":"MIA-PFF","route":"F14","weight":4103,"zips":["33172","33192","33182"]},{"dsp":"MIA-PFF","route":"F15","weight":2882,"zips":["33178","33172"]},{"dsp":"MIA-PFC","route":"M24","weight":2053,"zips":["33122","33126","33206","33191"]},{"dsp":"MIA-PFC","route":"M25","weight":3133,"zips":["33122"]},{"dsp":"MIA-PFC","route":"M26","weight":1616,"zips":["33172"]},{"dsp":"MIA-PFC","route":"M27","weight":17,"zips":["33192"]},{"dsp":"MIA-PFC","route":"M28","weight":583,"zips":["33182","33126","33191"]},{"dsp":"MIA-PFC","route":"M29","weight":2653,"zips":["33178"]},{"dsp":"MIA-PFC","route":"M30","weight":105,"zips":["33198"]},{"dsp":"MIA-PFC","route":"M31","weight":2165,"zips":["33166"]},{"dsp":"MIA-PFC","route":"M32","weight":185,"zips":["33195","33166"]}];
 const MIA_PFC_PFF_TOTAL_WEIGHT=MIA_PFC_PFF_PROFILE.reduce((s,x)=>s+x.weight,0);
+
+// FLL 2026-10-22 reference (unique tracking numbers, 70,484 FLL / 12,182 in F21-F26).
+// Coverage ZIPs were reported as *lists of ZIPs per route*, not the ZIP of each parcel.
+// This reference drives ROUTE weights; daily ZIP weights drive distribution within each route.
+const FLL_FREIGHT_REFERENCE={total:70484,freight:12182,referenceDate:"2026-10-22"};
+const FLL_FREIGHT_ROUTES=[
+  {dsp:"FLL-SDI02",route:"F21",weight:1324,zips:["33054","33014","33162","33147"]},
+  {dsp:"FLL-SDI02",route:"F22",weight:1227,zips:["33018","33016","33015"]},
+  {dsp:"FLL-OTD02",route:"F23",weight:1792,zips:["33332","33024","33179","33023","33020","33021","33028","33025","33029"]},
+  {dsp:"FLL-WME02",route:"F24",weight:3292,zips:["33311","33020","33316","33312","33315"]},
+  {dsp:"FLL-OTD02",route:"F25",weight:2375,zips:["33351","33314","33312","33322","33317","33323","33313"]},
+  {dsp:"FLL-OTD02",route:"F26",weight:2172,zips:["33069","33063","33067","33068","33334","33064","33309"]}
+];
+// ZIP-level FLL freight shares use the Oct 23 actual package ZIP (not route coverage lists).
+// Example: ZIP 33311 had 3,170 F24 parcels out of 4,618 (68.64%).
+// Local ZIP forecast totals are preserved; exact global freight % is a *target*.
+// If no matching freight ZIPs exist, we do not fabricate new ZIPs.
+const FLL_FREIGHT_ZIP_REFERENCE_DATE="2026-10-23";
+const FLL_FREIGHT_ZIP_REFERENCE={"33009":{"total":1584,"routes":{"F26":1}},"33014":{"total":1844,"routes":{"F21":474}},"33015":{"total":1638,"routes":{"F22":102}},"33016":{"total":1787,"routes":{"F22":516}},"33018":{"total":2412,"routes":{"F22":607}},"33020":{"total":1036,"routes":{"F23":6}},"33021":{"total":921,"routes":{"F23":84}},"33023":{"total":2550,"routes":{"F23":1005}},"33024":{"total":1477,"routes":{"F23":11}},"33025":{"total":1539,"routes":{"F23":5}},"33028":{"total":526,"routes":{"F23":55}},"33029":{"total":1001,"routes":{"F23":57}},"33054":{"total":1283,"routes":{"F21":210}},"33063":{"total":1504,"routes":{"F26":487}},"33064":{"total":1258,"routes":{"F26":19}},"33068":{"total":1089,"routes":{"F26":90}},"33069":{"total":895,"routes":{"F26":195}},"33147":{"total":1246,"routes":{"F21":84}},"33162":{"total":792,"routes":{"F21":47}},"33179":{"total":836,"routes":{"F23":47}},"33309":{"total":1464,"routes":{"F26":565}},"33311":{"total":4618,"routes":{"F24":3170}},"33312":{"total":1216,"routes":{"F24":109}},"33313":{"total":936,"routes":{"F25":39}},"33314":{"total":705,"routes":{"F25":37}},"33315":{"total":321,"routes":{"F24":102}},"33316":{"total":301,"routes":{"F24":101}},"33317":{"total":626,"routes":{"F25":18}},"33322":{"total":689,"routes":{"F25":107}},"33323":{"total":362,"routes":{"F25":27}},"33332":{"total":472,"routes":{"F23":214}},"33334":{"total":1164,"routes":{"F26":570}},"33351":{"total":2666,"routes":{"F25":1652}}};
+const FLL_FREIGHT_DEFAULT_PERCENT=100*FLL_FREIGHT_REFERENCE.freight/FLL_FREIGHT_REFERENCE.total;
+
 let volumeData=[], mapData=[], zipMap=new Map(), mappingConflicts=[];
 let volumeSchema={}, mapSchema={}, volumeMeta=null, mapMeta=null;
 let discoveredStations=new Set(DEFAULT_STATIONS), stationSelected=new Set();
 let globalAddUnits=1.0, fineTuneByStation={};
 let lastResult=null;
 let activeTab="detail";
+let forecastMode="global";
+let historyDays=[];
+let dspAdjustment={};
+let dspBaseCache={};
+let historyBusy=false;
 
 function headerMatchScore(header,role){
   const h=normKey(header); if(!h)return 0;
@@ -396,15 +458,15 @@ function buildZipMap(){
   }
   return {keys,valid:true,duplicates,rules:rulesCount};
 }
-function getZip(row){
-  if(volumeSchema.zip){const z=cleanZip(row[volumeSchema.zip]);if(z)return z;}
+function getZip(row,schema=volumeSchema){
+  if(schema.zip){const z=cleanZip(row[schema.zip]);if(z)return z;}
   for(const k of Object.keys(row)){if(headerMatchScore(k,"zip")>=55){const z=cleanZip(row[k]);if(z)return z;}}
   return null;
 }
-function getStation(row,allowMapping=true){
-  if(volumeSchema.station){const s=canonicalStation(row[volumeSchema.station]);if(s)return s;}
-  if(volumeSchema.dsp){const s=stationFromDSP(row[volumeSchema.dsp]);if(s)return s;}
-  if(volumeSchema.route){const s=stationFromRoute(row[volumeSchema.route]);if(s)return s;}
+function getStation(row,allowMapping=true,schema=volumeSchema){
+  if(schema.station){const s=canonicalStation(row[schema.station]);if(s)return s;}
+  if(schema.dsp){const s=stationFromDSP(row[schema.dsp]);if(s)return s;}
+  if(schema.route){const s=stationFromRoute(row[schema.route]);if(s)return s;}
   // Future exports may rename the columns. Inspect values as a fallback.
   for(const [k,v] of Object.entries(row)){
     if(headerMatchScore(k,"station")>=55){const s=canonicalStation(v);if(s)return s;}
@@ -414,12 +476,12 @@ function getStation(row,allowMapping=true){
     if(/^[A-Z]{3}\d{1,2}$/i.test(sv)){const s=canonicalStation(sv);if(s)return s;}
     const rs=stationFromRoute(sv);if(rs)return rs;
   }
-  if(allowMapping&&zipMap.size){const z=getZip(row);if(z){const s=uniqueStationFromZip(z);if(s)return s;}}
+  if(allowMapping&&zipMap.size){const z=getZip(row,schema);if(z){const s=uniqueStationFromZip(z);if(s)return s;}}
   return null;
 }
-function getVolumeWeight(row){
-  if(!volumeSchema.count)return 1;
-  const n=toNumber(row[volumeSchema.count]);
+function getVolumeWeight(row,schema=volumeSchema){
+  if(!schema.count)return 1;
+  const n=toNumber(row[schema.count]);
   return Number.isFinite(n)&&n>0?n:0;
 }
 function globalTotalVolume(){
@@ -521,6 +583,242 @@ function splitMiaPfcPff(rows){
   }
   return keep.concat(split);
 }
+// Split FLL's *existing station total*; never add freight on top of it.
+// If actual F21-F26 assignments are already supplied by Mapping, preserve them.
+function isFllFreightRoute(route){
+  const s=String(route||"").toUpperCase().replace(/\s+/g,"");
+  return /(?:^|[^A-Z0-9])F(?:21|22|23|24|25|26)(?:$|[^0-9])/.test(s);
+}
+function freightByZipFromLocalShares(zipEntries,sourceKey,globalIntensityPercent){
+  // The observed share for each ZIP is primary. This avoids diluting 33311 by
+  // rescaling that ZIP to fit a different day's overall FLL freight percentage.
+  // A manually adjusted intensity scales each ZIP rate, capped at 100%.
+  const factor=globalIntensityPercent/FLL_FREIGHT_DEFAULT_PERCENT;
+  return zipEntries.map(z=>{
+    const total=Math.max(0,Math.round(Number(z[sourceKey])||0));
+    const ref=FLL_FREIGHT_ZIP_REFERENCE[z.zip];
+    if(!ref||ref.total<=0||total<=0)return 0;
+    const freightHistory=Object.values(ref.routes).reduce((a,b)=>a+b,0);
+    const fraction=Math.min(1,Math.max(0,(freightHistory/ref.total)*factor));
+    return Math.min(total,Math.round(total*fraction));
+  });
+}
+// Estimate freight by specific ZIP, then deduct it from the existing DSP / ZIP
+// before allocating to F21-F26. Keeps each ZIP and the FLL station total exact.
+function splitFllFreight(rows){
+  const enabled=$("fllFreightEnabled").checked;
+  const percent=Math.min(100,Math.max(0,Number($( "fllFreightPercent").value)||0));
+  const pool=rows.filter(x=>x.station==="FLL");
+  const neutral={applied:false,percent,actual:false,normalCurrent:0,freightCurrent:0,normalForecast:0,freightForecast:0,zipFallbacks:[],unallocatedCurrent:0,unallocatedForecast:0,actualPercent:0};
+  if(!enabled||!pool.length||percent===0)return {rows:rows.slice(),meta:neutral};
+  if(pool.some(x=>isFllFreightRoute(x.route))){
+    const actual=pool.filter(x=>isFllFreightRoute(x.route));
+    const regular=pool.filter(x=>!isFllFreightRoute(x.route));
+    return {rows:rows.slice(),meta:{...neutral,actual:true,freightCurrent:actual.reduce((s,x)=>s+x.current,0),freightForecast:actual.reduce((s,x)=>s+x.forecast,0),normalCurrent:regular.reduce((s,x)=>s+x.current,0),normalForecast:regular.reduce((s,x)=>s+x.forecast,0)}};
+  }
+  const originalCurrent=pool.reduce((s,x)=>s+x.current,0);
+  const originalForecast=pool.reduce((s,x)=>s+x.forecast,0);
+  if(originalCurrent<=0&&originalForecast<=0)return {rows:rows.slice(),meta:neutral};
+
+  const byZip=new Map();
+  for(const x of pool){
+    const entry=byZip.get(x.zip)||{zip:x.zip,current:0,forecast:0,leaves:[]};
+    entry.current+=x.current;entry.forecast+=x.forecast;entry.leaves.push(x);byZip.set(x.zip,entry);
+  }
+  const entries=[...byZip.values()].sort((a,b)=>a.zip.localeCompare(b.zip));
+  const freightCurrentByZip=freightByZipFromLocalShares(entries,"current",percent);
+  const freightForecastByZip=freightByZipFromLocalShares(entries,"forecast",percent);
+  const freight=[];const normal=[];
+  for(let i=0;i<entries.length;i++){
+    const entry=entries[i];const cur=freightCurrentByZip[i],forecast=freightForecastByZip[i];
+    const leafCur=allocateWeightedTotal(cur,entry.leaves,x=>x.current);
+    const leafFc=allocateWeightedTotal(forecast,entry.leaves,x=>x.forecast);
+    for(let j=0;j<entry.leaves.length;j++){
+      const before=entry.leaves[j],newCur=before.current-leafCur[j].value,newFc=before.forecast-leafFc[j].value;
+      if(newCur<0||newFc<0)throw new Error("FLL ZIP deduction exceeds source packages");
+      if(newCur>0||newFc>0)normal.push({...before,current:newCur,forecast:newFc});
+    }
+    if(cur===0&&forecast===0)continue;
+    const ref=FLL_FREIGHT_ZIP_REFERENCE[entry.zip];
+    const routes=Object.entries(ref.routes).filter(([route,n])=>n>0&&FLL_FREIGHT_ROUTES.some(x=>x.route===route))
+      .map(([route,weight])=>({route,weight,dsp:FLL_FREIGHT_ROUTES.find(x=>x.route===route).dsp}));
+    if(!routes.length)throw new Error("FLL freight ZIP is missing route shares: "+entry.zip);
+    const routeCur=allocateWeightedTotal(cur,routes,r=>r.weight);
+    const routeFc=allocateWeightedTotal(forecast,routes,r=>r.weight);
+    for(let j=0;j<routes.length;j++){
+      if(routeCur[j].value===0&&routeFc[j].value===0)continue;
+      freight.push({station:"FLL",dsp:routes[j].dsp,route:routes[j].route,zip:entry.zip,
+        current:routeCur[j].value,forecast:routeFc[j].value,estimated:true});
+    }
+  }
+  const freightCurrent=freight.reduce((s,x)=>s+x.current,0);
+  const freightForecast=freight.reduce((s,x)=>s+x.forecast,0);
+  // Never invent freight allocations in a ZIP which has zero historical support.
+  const actualPercent=originalForecast?100*freightForecast/originalForecast:0;
+  const unallocatedCurrent=0,unallocatedForecast=0;
+  if(normal.reduce((s,x)=>s+x.current,0)+freightCurrent!==originalCurrent||
+     normal.reduce((s,x)=>s+x.forecast,0)+freightForecast!==originalForecast){
+    throw new Error("FLL ZIP split reconciliation failed");
+  }
+  return {rows:rows.filter(x=>x.station!=="FLL").concat(normal,freight),
+    meta:{applied:true,percent,actual:false,freightCurrent,freightForecast,
+      normalCurrent:originalCurrent-freightCurrent,normalForecast:originalForecast-freightForecast,
+      actualPercent,unallocatedCurrent,unallocatedForecast,zipFallbacks:[]}};
+}
+
+// Historical DSP mix is compared as a share of its station (rather than raw volume),
+// using the older history files versus the last 1-3 history files.
+function historyDateFromFilename(s){
+  const m=String(s||"").match(/(20\d\d)[-_.]?(0[1-9]|1[0-2])[-_.]?([0-2]\d|3[01])/);
+  return m?`${m[1]}-${m[2]}-${m[3]}`:null;
+}
+function countDSPsForInput(rows,schema){
+  const byStation={};let total=0,mapped=0,unmapped=0;
+  for(const r of rows){
+    const weight=getVolumeWeight(r,schema);if(weight<=0)continue;total+=weight;
+    const zip=getZip(r,schema),station=getStation(r,true,schema);
+    if(!zip||!station){unmapped+=weight;continue;}
+    const rule=getMappingForStation(zip,station).info;
+    if(!rule){unmapped+=weight;continue;}
+    if(!byStation[station])byStation[station]={};
+    byStation[station][rule.dsp]=(byStation[station][rule.dsp]||0)+weight;
+    mapped+=weight;
+  }
+  return {byStation,total,mapped,unmapped};
+}
+function rebuildDSPCache(){
+  dspBaseCache=zipMap.size&&volumeData.length?countDSPsForInput(volumeData,volumeSchema).byStation:{};
+}
+function momentumForDSP(st,dsp){
+  if(historyDays.length<2)return 1;
+  const pivot=Math.max(1,Math.min(3,Math.floor(historyDays.length/2)));
+  const early=historyDays.slice(0,-pivot),recent=historyDays.slice(-pivot);
+  const avgShare=(days)=>{
+    let sum=0,used=0;
+    for(const day of days){
+      const counts=day.byStation[st];if(!counts)continue;
+      const total=Object.values(counts).reduce((a,b)=>a+b,0);
+      if(total<20)continue;
+      sum+=(counts[dsp]||0)/total;used++;
+    }
+    return used?sum/used:null;
+  };
+  const older=avgShare(early),newer=avgShare(recent);
+  if(older===null||newer===null||older<0.001||newer<0.001)return 1;
+  // Cap and shrink the share ratio: avoid a single volatile day dominating the forecast.
+  const relative=Math.min(1.4,Math.max(0.70,newer/older));
+  return 1+0.65*(relative-1);
+}
+function getDSPBias(st,dsp){
+  const v=Number(dspAdjustment[st+"\u0001"+dsp]);
+  return Number.isFinite(v)?Math.max(-90,Math.min(300,v)):0;
+}
+function dspAllocationForStation(st,dspCounts,target){
+  const keys=Object.keys(dspCounts).filter(k=>dspCounts[k]>0).sort();
+  const items=keys.map(dsp=>({dsp,current:dspCounts[dsp]}));
+  const current=items.reduce((sum,x)=>sum+x.current,0);
+  const delta=Math.round(target)-current;
+  if(!items.length)return [];
+  const weighted=items.map(x=>{
+    const trend=forecastMode==="dynamic"?momentumForDSP(st,x.dsp):1;
+    const adjustment=forecastMode==="global"?1:1+getDSPBias(st,x.dsp)/100;
+    return {...x,trend,weight:x.current*trend*adjustment};
+  });
+  if(forecastMode==="global")return allocateWeightedTotal(Math.max(0,Math.round(target)),weighted,x=>x.current)
+    .map(x=>({...x.item,target:x.value}));
+  if(delta>=0){
+    return allocateWeightedTotal(delta,weighted,x=>x.weight)
+      .map(x=>({...x.item,target:x.item.current+x.value}));
+  }
+  // If total falls below current, remove with a per-DSP capacity bound.
+  // Cannot reduce any DSP below zero.
+  let toRemove=Math.min(-delta,current),removed=new Map(weighted.map(x=>[x.dsp,0]));
+  while(toRemove>0){
+    const available=weighted.filter(x=>x.current-removed.get(x.dsp)>0);
+    if(!available.length)break;
+    const proposals=allocateWeightedTotal(toRemove,available,x=>x.weight);
+    let taken=0;
+    for(const p of proposals){
+      const cap=p.item.current-removed.get(p.item.dsp);
+      const use=Math.min(cap,p.value);removed.set(p.item.dsp,removed.get(p.item.dsp)+use);taken+=use;
+    }
+    if(!taken){const first=available[0];removed.set(first.dsp,removed.get(first.dsp)+1);taken=1;}
+    toRemove-=taken;
+  }
+  return weighted.map(x=>({...x,target:x.current-removed.get(x.dsp)}));
+}
+function selectedDSPAllocation(){
+  const all=[];const mult=globalMultiplier();
+  for(const st of [...stationSelected].sort((a,b)=>stationSort(a,b,stationCounts(false)))){
+    const counts=dspBaseCache[st]||{};
+    const current=Object.values(counts).reduce((sum,x)=>sum+x,0);
+    if(!current)continue;
+    const tune=Math.round(Number(fineTuneByStation[st])||0);
+    const target=Math.max(0,Math.round(current*mult)+tune);
+    for(const item of dspAllocationForStation(st,counts,target))all.push({station:st,...item});
+  }
+  return all;
+}
+function renderDSPControls(){
+  const panel=$("dspSettings");panel.innerHTML="";
+  const modeMessage={
+    global:"Original mode: the same growth rate across the DSPs within each station. Exact station totals are preserved.",
+    dynamic:historyDays.length<2?"DSP Dynamic needs at least 2 historical daily files. Until then, it uses today's DSP shares; optional manual tuning still works.":`DSP Dynamic uses ${historyDays.length} historical day(s) to adjust DSP shares. Recent share ÷ older share is capped and dampened; station totals remain exact.`,
+    manual:"Manual mode: enter a DSP preference (%). The station's additional packages are redistributed, without changing that station's total."
+  };
+  $("modeExplanation").textContent=modeMessage[forecastMode];
+  document.querySelectorAll(".modeBtn").forEach(x=>x.classList.toggle("active",x.dataset.mode===forecastMode));
+  const items=selectedDSPAllocation(),selected=[...new Set(items.map(x=>x.station))];
+  if(!items.length){panel.innerHTML='<div class="dspPrompt">Upload both files and select a station to view DSP adjustments.</div>';return;}
+  for(const st of selected){
+    const title=document.createElement("div");title.className="dspGroupName";title.textContent=st+" · "+items.filter(x=>x.station===st).length+" DSPs (before freight/PFC split)";panel.appendChild(title);
+    for(const item of items.filter(x=>x.station===st).sort((a,b)=>b.current-a.current||a.dsp.localeCompare(b.dsp))){
+      const row=document.createElement("div");row.className="dspRow";
+      const bias=getDSPBias(st,item.dsp);
+      const growth=item.current?((item.target/item.current-1)*100):0;
+      row.innerHTML=`<div class="dspName"><b>${esc(item.dsp)}</b><small>Current ${fmt(item.current)}</small></div>
+        <div><small>Trend</small>${(item.trend||1).toFixed(2)}x</div>
+        <div><small>Fine tune %</small><input type="number" min="-90" max="300" step="5" value="${esc(bias)}" aria-label="${esc(item.dsp)} DSP preference percentage"></div>
+        <div class="dspProjected"><small>Forecast</small><b>${fmt(item.target)}</b><small>${growth>=0?"+":""}${growth.toFixed(1)}%</small></div>`;
+      row.querySelector("input").onchange=e=>{
+        const val=Number(e.target.value);
+        dspAdjustment[st+"\u0001"+item.dsp]=Number.isFinite(val)?Math.max(-90,Math.min(300,val)):0;
+        renderDSPControls();invalidate();
+      };
+      panel.appendChild(row);
+    }
+  }
+}
+function clearHistory(){
+  historyDays=[];$("historyInput").value="";
+  $("historyStatus").textContent="No historical files loaded. Dynamic mode falls back to proportional DSP shares.";
+  renderDSPControls();invalidate();
+}
+async function handleHistory(files){
+  if(historyBusy)return;
+  if(!zipMap.size){alert("Upload ZIP Mapping before historical Volume files.");return;}
+  const input=Array.from(files||[]).filter(f=>/\.(xlsx|xls|csv)$/i.test(f.name));
+  if(input.length<2||input.length>14){alert("Select between 2 and 14 daily historical files.");return;}
+  const allDateNamed=input.every(f=>historyDateFromFilename(f.name));
+  const sorted=allDateNamed?input.sort((a,b)=>historyDateFromFilename(a.name).localeCompare(historyDateFromFilename(b.name))):input;
+  historyBusy=true;$("historyStatus").textContent="Reading historical files…";
+  try{
+    const days=[];
+    for(let i=0;i<sorted.length;i++){
+      $("historyStatus").textContent=`Reading history ${i+1}/${sorted.length}: ${sorted[i].name}`;
+      const parsed=await readSpreadsheetSmart(sorted[i],"volume");
+      const stats=countDSPsForInput(parsed.rows,parsed.schema);
+      if(stats.mapped<=0)throw new Error(`${sorted[i].name}: no rows could match the ZIP Mapping`);
+      days.push({name:sorted[i].name,date:historyDateFromFilename(sorted[i].name),...stats});
+    }
+    historyDays=days;
+    const t=days.reduce((sum,x)=>sum+x.total,0),m=days.reduce((sum,x)=>sum+x.mapped,0);
+    $("historyStatus").textContent=`✓ Loaded ${days.length} historical day(s): ${days[0].name} → ${days.at(-1).name}. Mapped ${fmt(m)}/${fmt(t)} (${t?(100*m/t).toFixed(1):0}%); only matched records affect DSP trends.${allDateNamed?" Dates sorted from filenames.":" Using selected file order (oldest first)."}`;
+    renderDSPControls();invalidate();
+  }catch(e){historyDays=[];$("historyStatus").textContent="History loading failed: "+e.message;alert("Could not load history: "+e.message);renderDSPControls();invalidate();}
+  finally{historyBusy=false;}
+}
+
 function renderStations(){
   const bar=$("stationBar"); bar.innerHTML="";
   const counts=stationCounts(false);
@@ -531,7 +829,7 @@ function renderStations(){
   }
   for(const st of list){
     const btn=document.createElement("button"); btn.className="stationBtn"+(stationSelected.has(st)?" active":""); btn.textContent=`${st} · ${fmt(counts[st])}`;
-    btn.onclick=()=>{ if(stationSelected.has(st))stationSelected.delete(st); else stationSelected.add(st); renderStations(); renderStationInputs(); invalidate(); };
+    btn.onclick=()=>{ if(stationSelected.has(st))stationSelected.delete(st); else stationSelected.add(st); renderStations(); renderStationInputs(); renderDSPControls(); invalidate(); };
     bar.appendChild(btn);
   }
 }
@@ -551,7 +849,7 @@ function renderStationInputs(){
     const forecast=Math.max(0,autoTarget+tune);
     const row=document.createElement("div"); row.className="stationInput";
     row.innerHTML=`<b>${esc(st)}</b><span class="autoAdd">${autoAdd>=0?"+":""}${fmt(autoAdd)}</span><input type="number" step="100" value="${esc(tune)}" title="Optional station adjustment in packages"><div class="forecastMini">→ ${fmt(forecast)}</div>`;
-    const inp=row.querySelector("input"); inp.oninput=()=>{fineTuneByStation[st]=Math.round(Number(inp.value)||0);const next=Math.max(0,autoTarget+fineTuneByStation[st]);row.querySelector(".forecastMini").textContent=`→ ${fmt(next)}`;invalidate();};
+    const inp=row.querySelector("input"); inp.oninput=()=>{fineTuneByStation[st]=Math.round(Number(inp.value)||0);const next=Math.max(0,autoTarget+fineTuneByStation[st]);row.querySelector(".forecastMini").textContent=`→ ${fmt(next)}`;renderDSPControls();invalidate();};
     box.appendChild(row);
   }
   const hint=document.createElement("div"); hint.className="footerNote"; hint.textContent="Auto add uses the same global multiplier as the original MIA01 Pre Alarm. Fine tune is optional and is entered in packages (+ / −)."; box.appendChild(hint);
@@ -575,7 +873,7 @@ async function handleVolume(file){
     const countMode=volumeSchema.count?`Volume: ${esc(volumeSchema.count)}`:"Volume: 1 row = 1 package";
     const stationField=volumeSchema.station?`Station: <b>${esc(volumeSchema.station)}</b>`:volumeSchema.dsp?`Station inferred from DSP: <b>${esc(volumeSchema.dsp)}</b>`:volumeSchema.route?`Station inferred from Route: <b>${esc(volumeSchema.route)}</b>`:`Station: <b>from ZIP Mapping when unique</b>`;
     $("volInfo").innerHTML=`✓ <b>${esc(file.name)}</b><br>${fmt(volumeData.length)} data rows · sheet: ${esc(volumeMeta.sheetName)} · header row ${volumeMeta.headerRow}<br>Matched → ZIP: <b>${esc(volumeSchema.zip)}</b> · ${stationField} · ${countMode}<br><span class="muted">DSP / Route are always completed from ZIP Mapping.</span>`;
-    renderStations(); renderStationInputs(); invalidate();
+    rebuildDSPCache(); clearHistory(); renderStations(); renderStationInputs(); renderDSPControls(); invalidate();
   }catch(e){alert("Could not read volume file: "+e.message)}
 }
 async function handleMap(file){
@@ -590,7 +888,7 @@ async function handleMap(file){
     const counts=stationCounts(false); Object.keys(counts).forEach(st=>discoveredStations.add(st));
     const eligible=eligibleStations();
     stationSelected=new Set([...stationSelected].filter(st=>eligible.includes(st)));
-    renderStations(); renderStationInputs(); invalidate();
+    rebuildDSPCache(); clearHistory(); renderStations(); renderStationInputs(); renderDSPControls(); invalidate();
   }catch(e){alert("Could not read mapping file: "+e.message)}
 }
 
@@ -639,11 +937,22 @@ function buildForecast(){
     const autoTarget=Math.round(current*gm);
     const tune=Math.round(Number(fineTuneByStation[st])||0);
     const target=Math.max(0,autoTarget+tune);
-    const allocated=allocateExact(leaves,target); for(const item of allocated) detail.push(item);
+    let allocated=[];
+    if(forecastMode==="global"){
+      allocated=allocateExact(leaves,target);
+    }else{
+      const grouped=new Map();
+      for(const leaf of leaves){const arr=grouped.get(leaf.dsp)||[];arr.push(leaf);grouped.set(leaf.dsp,arr);}
+      const counts=Object.fromEntries([...grouped].map(([dsp,arr])=>[dsp,arr.reduce((sum,x)=>sum+x.current,0)]));
+      const targets=dspAllocationForStation(st,counts,target);
+      for(const entry of targets)for(const leaf of allocateExact(grouped.get(entry.dsp)||[],entry.target))allocated.push(leaf);
+    }
+    for(const item of allocated)detail.push(item);
     stationMeta[st]={current,autoAdd:autoTarget-current,tune,add:target-current,target,globalMultiplier:gm,multiplier:current?target/current:0};
   }
   const normalizedDetail=splitMiaPfcPff(detail);
-  detail.length=0; for(const item of normalizedDetail)detail.push(item);
+  const fllSplit=splitFllFreight(normalizedDetail);
+  detail.length=0; for(const item of fllSplit.rows)detail.push(item);
   const summaryMap=new Map();
   for(const x of detail){
     const key=x.station+"\u0001"+x.dsp; const v=summaryMap.get(key)||{station:x.station,dsp:x.dsp,current:0,forecast:0}; v.current+=x.current;v.forecast+=x.forecast;summaryMap.set(key,v);
@@ -653,7 +962,7 @@ function buildForecast(){
   detail.sort((a,b)=>a.station.localeCompare(b.station)||a.dsp.localeCompare(b.dsp)||a.route.localeCompare(b.route)||a.zip.localeCompare(b.zip));
   const issues=[...issueMap.values()].sort((a,b)=>b.rows-a.rows||a.type.localeCompare(b.type));
   const current=Object.values(stationMeta).reduce((sum,x)=>sum+x.current,0), added=Object.values(stationMeta).reduce((sum,x)=>sum+x.add,0), forecast=detail.reduce((sum,x)=>sum+x.forecast,0);
-  return {summary,detail,issues,stationMeta,current,added,forecast,considered,globalTotal:gTotal,globalAdd:gAdd,globalMultiplier:gm,unmapped:issues.filter(x=>x.type!=="Duplicate mapping").reduce((sum,x)=>sum+x.rows,0)};
+  return {summary,detail,issues,stationMeta,current,added,forecast,considered,globalTotal:gTotal,globalAdd:gAdd,globalMultiplier:gm,forecastMode,historyDays:historyDays.length,fllFreight:fllSplit.meta,unmapped:issues.filter(x=>x.type!=="Duplicate mapping").reduce((sum,x)=>sum+x.rows,0)};
 }
 function driversNeeded(forecast){const cap=Math.max(1,Math.round(Number($("driverCap").value)||180));return Math.ceil(forecast/cap)}
 function renderResult(result){
@@ -664,6 +973,16 @@ function renderResult(result){
   renderDetail(); renderUnmapped();
   const conflict=mappingConflicts.length?` ${fmt(mappingConflicts.length)} conflicting duplicate ZIP mapping(s) also found.`:"";
   $("diag").className="message "+(result.unmapped?"warn":"good"); $("diag").textContent=result.unmapped?`${fmt(result.unmapped)} selected volume row(s) were excluded due to ZIP/mapping issues.${conflict}`:`Forecast generated. All selected rows were mapped.${conflict}`;
+  if(result.forecastMode!=="global"){
+    $("diag").textContent+=` Mode: ${result.forecastMode.toUpperCase()} · ${result.historyDays} historical file(s). Allocation remains within each selected station.`;
+    if(result.forecastMode==="dynamic"&&result.historyDays<2)$("diag").textContent+=" No historical data: using today's DSP mix (plus optional biases).";
+  }
+  const fll=result.fllFreight;
+  if(fll?.applied){
+    $("diag").textContent+=` FLL ZIP-based estimated split: regular ${fmt(fll.normalForecast)} + freight ${fmt(fll.freightForecast)} (${fll.percent.toFixed(2)}%); same station total.`;
+    $("diag").textContent+=` Per-ZIP freight share from historical actuals; observed overall share ${(fll.actualPercent||0).toFixed(2)}% (intensity setting ${fll.percent.toFixed(2)}%). Daily overall share can differ because the ZIP mix changes.`;
+  }else if(fll?.actual){$("diag").textContent+=" Actual FLL F21–F26 mapping was detected; historical split not applied.";}
+
 }
 function filterText(s){const q=$("searchInput").value.trim().toLowerCase();return !q||String(s).toLowerCase().includes(q)}
 function renderSummary(){
@@ -758,10 +1077,18 @@ function exportExcel(){
   else issueAOA.push(["No mapping issues / Sin problemas de mapeo","","","",""]);
   const stationAOA=[["Station\nEstación","Current\nActual","Auto Add\nAumento Automático","Fine Tune\nAjuste","Actual Added\nAgregado Real","Forecast\nPronóstico","Global Multiplier\nMultiplicador Global"]];
   for(const [st,x] of Object.entries(lastResult.stationMeta)) stationAOA.push([st,x.current,x.autoAdd,x.tune,x.add,x.target,Number(x.globalMultiplier.toFixed(6))]);
+  const splitAOA=[["Station / Estación","Route / Ruta","DSP","Forecast / Pronóstico","Basis / Base"]];
+  if(lastResult.fllFreight?.applied||lastResult.fllFreight?.actual){
+    for(const route of FLL_FREIGHT_ROUTES){
+      const count=lastResult.detail.filter(x=>x.station==="FLL"&&x.dsp===route.dsp&&x.route===route.route).reduce((s,x)=>s+x.forecast,0);
+      splitAOA.push(["FLL",route.route,route.dsp,count,lastResult.fllFreight.actual?"Actual route mapping":"ZIP split 2026-10-23 mix"]);
+    }
+  }
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(detailAOA),"Route ZIP Detail");
+  if(splitAOA.length>1)XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(splitAOA),"FLL Freight Split");
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(stationAOA),"Station Forecast");
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(issueAOA),"Unmapped");
-  XLSX.writeFile(wb,"PreAlarm_V3_5_Forecast.xlsx");
+  XLSX.writeFile(wb,"PreAlarm_V3_8_Forecast.xlsx");
 }
 function buildDSPImageGroups(){
   const rows=detailPlanningRows(false), groups=new Map();
@@ -827,7 +1154,7 @@ async function exportImages(){
     }
     btn.textContent="Packing ZIP…";
     const out=await zip.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:6}});
-    const a=document.createElement("a");a.href=URL.createObjectURL(out);a.download="PreAlarm_V3_5_DSP_Images.zip";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+    const a=document.createElement("a");a.href=URL.createObjectURL(out);a.download="PreAlarm_V3_8_DSP_Images.zip";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
   }catch(e){alert("Could not export images: "+e.message);}
   finally{btn.textContent=old;btn.disabled=false;}
 }
@@ -835,15 +1162,27 @@ function setupDrop(zone,input,handler){zone.onclick=()=>input.click();zone.addEv
 setupDrop($("volUpload"),$("volInput"),handleVolume); setupDrop($("mapUpload"),$("mapInput"),handleMap);
 window.addEventListener("dragover",e=>e.preventDefault());window.addEventListener("drop",e=>e.preventDefault());window.addEventListener("dragenter",()=>$("overlay").classList.add("show"));window.addEventListener("dragleave",e=>{if(e.clientX===0&&e.clientY===0)$("overlay").classList.remove("show")});window.addEventListener("drop",()=>$("overlay").classList.remove("show"));
 $("runBtn").onclick=()=>{const result=buildForecast();if(!result.current){alert("No mapped packages found for the selected station(s). Check the station selection and ZIP mapping.");return;}renderResult(result)};
-$("resetBtn").onclick=()=>{volumeData=[];mapData=[];zipMap=new Map();mappingConflicts=[];volumeSchema={};mapSchema={};volumeMeta=null;mapMeta=null;stationSelected=new Set();fineTuneByStation={};globalAddUnits=1.0;lastResult=null;$("globalAddVol").value="1.0";$("volInput").value="";$("mapInput").value="";$("volUpload").classList.remove("success");$("mapUpload").classList.remove("success");$("volInfo").textContent="Waiting for file";$("mapInfo").textContent="Required · used to match ZIP → DSP / Route automatically.";renderStations();renderStationInputs();clearOutput();updateReady();$("diag").textContent="Upload a volume file to begin."};
-$("globalAddVol").oninput=()=>{globalAddUnits=Number($("globalAddVol").value)||0;renderStationInputs();invalidate();};
+$("resetBtn").onclick=()=>{volumeData=[];mapData=[];zipMap=new Map();mappingConflicts=[];volumeSchema={};mapSchema={};volumeMeta=null;mapMeta=null;stationSelected=new Set();fineTuneByStation={};globalAddUnits=1.0;lastResult=null;forecastMode="global";dspAdjustment={};historyDays=[];dspBaseCache={};$("historyInput").value="";$("historyStatus").textContent="No historical files loaded.";$("fllFreightEnabled").checked=true;$("fllFreightPercent").value="17.28";$("globalAddVol").value="1.0";$("volInput").value="";$("mapInput").value="";$("volUpload").classList.remove("success");$("mapUpload").classList.remove("success");$("volInfo").textContent="Waiting for file";$("mapInfo").textContent="Required · used to match ZIP → DSP / Route automatically.";renderStations();renderStationInputs();renderDSPControls();clearOutput();updateReady();$("diag").textContent="Upload a volume file to begin."};
+$("fllFreightEnabled").onchange=()=>invalidate();
+$("fllFreightPercent").oninput=()=>invalidate();
+$("globalAddVol").oninput=()=>{globalAddUnits=Number($("globalAddVol").value)||0;renderStationInputs();renderDSPControls();invalidate();};
+$("forecastModes").onclick=e=>{
+  const btn=e.target.closest(".modeBtn");if(!btn)return;
+  forecastMode=btn.dataset.mode;
+  if(forecastMode==="dynamic")$("historyDetails").open=true;
+  if(forecastMode==="manual")$("dspSettingsDetails").open=true;
+  renderDSPControls();invalidate();
+};
+$("historyInput").onchange=e=>handleHistory(e.target.files);
+$("clearHistoryBtn").onclick=clearHistory;
+$("clearDSPBiasBtn").onclick=()=>{dspAdjustment={};renderDSPControls();invalidate();};
 $("driverCap").oninput=()=>{if(lastResult){renderDetail();}};
 $("searchInput").oninput=()=>{if(lastResult){renderDetail();renderUnmapped()}};
 $("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(currentTSV());const old=$("copyBtn").textContent;$("copyBtn").textContent="Copied";setTimeout(()=>$("copyBtn").textContent=old,1100)}catch(e){alert("Copy failed. Your browser may block clipboard access for local files.")}};
 $("exportBtn").onclick=exportExcel;
 $("imageBtn").onclick=exportImages;
 $("tabs").onclick=e=>{const btn=e.target.closest(".tab");if(!btn)return;activeTab=btn.dataset.tab;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===btn));["detail","unmapped"].forEach(t=>$(t+"View").classList.toggle("hidden",t!==activeTab));};
-renderStations();renderStationInputs();updateGlobalEquiv();updateReady();
+renderStations();renderStationInputs();renderDSPControls();updateGlobalEquiv();updateReady();
 </script>
 </body>
 </html>
