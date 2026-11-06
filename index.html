@@ -1,214 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Pre Alarm V3.8</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f3f8fc">
+<title>Pre Alarm • 智能货量预报 V4.1.1 | Route Intelligence</title>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <style>
-:root{
-  --bg:#0b0d11; --panel:#12151b; --panel2:#171b22; --text:#edf0f5; --muted:#98a1af;
-  --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.055); --accent:#e53935;
-  --accent2:#ff5b55; --good:#2ecc71; --warn:#f0a328; --bad:#ff6262; --blue:#65a8ff;
-  --shadow:0 18px 55px rgba(0,0,0,.26);
-}
-*{box-sizing:border-box}
-html{color-scheme:dark}
-body{margin:0;background:radial-gradient(circle at 12% -10%,rgba(229,57,53,.15),transparent 31%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-button,input{font:inherit}
-button{color:inherit}
-.app{max-width:1500px;margin:0 auto;padding:28px}
-.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}
-.brand h1{font-size:27px;line-height:1.1;margin:0 0 7px;letter-spacing:.1px}.brand p{margin:0;color:var(--muted);font-size:13px}
-.badge{padding:7px 11px;border:1px solid rgba(229,57,53,.35);background:rgba(229,57,53,.09);border-radius:999px;font-size:12px;color:#ffc6c4;white-space:nowrap}
-.grid{display:grid;grid-template-columns:380px 1fr;gap:20px;align-items:start}
-.panel{background:linear-gradient(180deg,rgba(255,255,255,.018),transparent 110px),var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
-.sidebar{padding:19px;position:sticky;top:18px}.main{padding:19px;min-width:0}
-.section{padding:0 0 17px;margin:0 0 17px;border-bottom:1px solid var(--line2)}.section:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
-.sectionTitle{font-size:12px;text-transform:uppercase;letter-spacing:.11em;color:var(--muted);font-weight:750;margin-bottom:9px}
-.upload{border:1px dashed rgba(255,255,255,.18);border-radius:13px;padding:18px;display:flex;gap:12px;align-items:center;cursor:pointer;transition:.15s;background:rgba(255,255,255,.015)}
-.upload:hover,.upload.drag{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.03)}.upload.success{border-color:rgba(46,204,113,.45);background:rgba(46,204,113,.055)}
-.uploadIcon{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.06);display:grid;place-items:center;font-size:18px;flex:0 0 auto}
-.upload strong{display:block;font-size:13px;margin-bottom:2px}.upload span{display:block;color:var(--muted);font-size:12px;line-height:1.35}.fileMeta{margin-top:8px;color:var(--muted);font-size:12px;line-height:1.5}
-.stationBar{display:flex;flex-wrap:wrap;gap:8px}.stationBtn{border:1px solid rgba(255,255,255,.13);background:#0e1116;border-radius:999px;padding:7px 11px;font-size:12px;cursor:pointer}.stationBtn:hover{border-color:rgba(255,255,255,.28)}.stationBtn.active{background:var(--accent);border-color:var(--accent);color:#fff}
-.fieldRow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:6px}.field input,.search{width:100%;border:1px solid rgba(255,255,255,.12);background:#0d1015;color:var(--text);border-radius:10px;padding:9px 10px;outline:none}.field input:focus,.search:focus{border-color:rgba(101,168,255,.6)}
-.freightBox{margin-top:13px;padding:11px;border:1px solid rgba(255,255,255,.09);border-radius:11px;background:rgba(255,255,255,.018)}.freightBox summary{cursor:pointer;font-weight:750;font-size:12px;color:#d8dce5}.freightBox label{font-size:11px;color:var(--muted)}.freightBox input[type="number"]{width:115px;padding:8px;background:#0d1015;color:var(--text);border:1px solid rgba(255,255,255,.2);border-radius:8px}.freightInfo{color:var(--muted);line-height:1.5;font-size:11px;margin-top:8px}.freightControl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0 0}.stationInputs{display:flex;flex-direction:column;gap:7px;margin-top:10px}.stationHeader,.stationInput{display:grid;grid-template-columns:55px 92px 1fr 78px;align-items:center;gap:8px}.stationHeader{font-size:10px;color:var(--muted);padding:0 3px}.stationInput{border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:7px 8px;background:rgba(255,255,255,.018)}.stationInput b{font-size:12px}.stationInput .autoAdd{font-size:11px;color:#ffd084;font-variant-numeric:tabular-nums}.stationInput input{width:100%;min-width:0;border:1px solid rgba(255,255,255,.12);background:#0d1015;border-radius:8px;padding:7px 8px}.stationInput .forecastMini{text-align:right;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-.btn{border:1px solid rgba(255,255,255,.13);background:#10141a;border-radius:11px;padding:9px 12px;cursor:pointer;transition:.15s;font-size:12px;font-weight:700}.btn:hover{border-color:rgba(255,255,255,.28);transform:translateY(-1px)}.btn.primary{background:var(--accent);border-color:var(--accent);color:white}.btn.primary:hover{background:var(--accent2)}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}.btnRow{display:flex;gap:8px;flex-wrap:wrap}.btnRow .primary{flex:1}
-.message{margin-top:10px;font-size:12px;line-height:1.45;color:var(--muted)}.message.warn{color:#ffd291}.message.good{color:#b9ffd2}.message.bad{color:#ffb7b7}
-.kpis{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:10px;margin-bottom:15px}.kpi{border:1px solid var(--line2);background:var(--panel2);border-radius:13px;padding:13px}.kpi .name{font-size:11px;color:var(--muted);margin-bottom:8px}.kpi .value{font-size:22px;font-weight:800;letter-spacing:-.3px}.kpi .subv{font-size:11px;color:var(--muted);margin-top:3px}.kpi.alert .value{color:#ffd084}
-.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:11px}.tabs{display:flex;gap:5px;background:#0d1015;border:1px solid var(--line);padding:4px;border-radius:11px}.tab{border:0;background:transparent;border-radius:8px;padding:7px 10px;font-size:12px;color:var(--muted);cursor:pointer}.tab.active{background:#222832;color:var(--text)}.actions{display:flex;gap:7px;align-items:center}.search{width:190px;padding:8px 9px;font-size:12px}
-.tableWrap{border:1px solid var(--line);border-radius:13px;overflow:auto;max-height:650px;background:#0d1015}table{border-collapse:collapse;width:100%;min-width:860px;font-size:12px}th{position:sticky;top:0;z-index:2;text-align:left;background:#171b22;color:var(--muted);font-size:11px;letter-spacing:.02em;padding:10px;border-bottom:1px solid var(--line)}td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,.045);white-space:nowrap}tbody tr:hover{background:rgba(255,255,255,.025)}.num{text-align:right;font-variant-numeric:tabular-nums}.positive{color:#ffcc7c}.negative{color:#93e6b0}.muted{color:var(--muted)}.dspCell{font-weight:780}.growth{font-variant-numeric:tabular-nums}.pill{display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;border:1px solid var(--line);font-size:10px;color:var(--muted)}.pill.over{color:#ffd084;border-color:rgba(240,163,40,.28);background:rgba(240,163,40,.08)}
-.detailDSP td{font-weight:800;background:rgba(255,255,255,.025)}.detailRoute td{color:#d5d9e1}.detailZIP td{color:#abb3c0}.ind1{padding-left:28px!important}.ind2{padding-left:48px!important}.empty{padding:54px 18px;text-align:center;color:var(--muted);font-size:13px}
-.footerNote{margin-top:10px;color:var(--muted);font-size:11px;line-height:1.45}.thBi{display:flex;flex-direction:column;gap:2px;line-height:1.14}.thBi span:last-child{font-size:10px;font-weight:650;color:#c0c7d2}.sectionTitle .es{display:block;font-size:10px;letter-spacing:.06em;margin-top:2px;color:#7f8998;text-transform:none}.hidden{display:none!important}.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;z-index:999;opacity:0;pointer-events:none;transition:.15s}.overlay.show{opacity:1}.overlayBox{border:1px dashed rgba(255,255,255,.4);border-radius:18px;padding:28px 40px;background:#11151b;font-weight:800}
-@media(max-width:1050px){.grid{grid-template-columns:1fr}.sidebar{position:static}.kpis{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:680px){.app{padding:16px}.topbar{align-items:center}.brand h1{font-size:22px}.kpis{grid-template-columns:repeat(2,1fr)}.fieldRow{grid-template-columns:1fr}.toolbar{align-items:stretch}.actions{width:100%}.search{flex:1;min-width:0}.badge{display:none}.main,.sidebar{padding:15px}}
-
-/* V3.8 DSP forecast settings */
-.modeChoices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 12px}
-.modeBtn{cursor:pointer;text-align:center;background:#0b0f15;border:1px solid rgba(255,255,255,.13);border-radius:10px;padding:9px 4px;line-height:1.3;font-size:11px;font-weight:750;color:#abb5c4;min-height:48px}
-.modeBtn.active{border-color:var(--accent);background:rgba(229,57,53,.13);color:#fff}
-.modeBtn small{display:block;font-weight:500;color:#9ba4b4;font-size:10px;margin-top:3px}
-.histStatus{font-size:11px;line-height:1.5;color:#b5bdc9;margin-top:8px;overflow-wrap:anywhere}
-.hUpload{font-size:11px;padding:10px;display:flex;align-items:center;justify-content:center;background:#171d26;border:1px dashed rgba(255,255,255,.24);border-radius:9px;cursor:pointer;text-align:center}
-.hUpload:hover{border-color:#ff847d}
-.dspSettings{border:1px solid rgba(255,255,255,.09);border-radius:10px;margin-top:10px;background:#0e1319;max-height:330px;overflow:auto;padding:7px}
-.dspSettings:empty{display:none}
-.dspGroupName{font-size:11px;color:#ffcd93;font-weight:800;padding:9px 5px 5px;border-top:1px solid rgba(255,255,255,.07)}
-.dspGroupName:first-child{border-top:none}
-.dspRow{display:grid;grid-template-columns:minmax(70px,1fr) 65px 70px 58px;gap:5px;align-items:center;padding:6px 4px;border-bottom:1px solid rgba(255,255,255,.035);font-size:11px}
-.dspRow small{display:block;color:#8995a5;font-size:9px;line-height:1.5}
-.dspRow .dspName{overflow-wrap:anywhere}
-.dspRow input{width:100%;background:#080c11;color:#eff2f6;border:1px solid rgba(255,255,255,.19);border-radius:6px;padding:5px;font-size:11px;text-align:right}
-.dspRow .dspProjected{text-align:right;font-variant-numeric:tabular-nums}
-.dspCaption{font-size:10px;color:#96a4b5;line-height:1.55;margin:8px 0 2px}
-.dspPrompt{font-size:11px;color:#98a6b7;padding:9px 5px}
-.historyDetails summary{cursor:pointer;font-size:12px;font-weight:750;margin:12px 0;color:#e1e6ef}
-@media(max-width:430px){.modeChoices{grid-template-columns:1fr}.dspRow{grid-template-columns:minmax(65px,1fr) 52px 62px 56px}}
+:root{--bg:#f3f8fc;--panel:#fff;--panel2:#f7fafc;--ink:#142c45;--text:#213d53;--muted:#72889b;--line:#dfeaf1;--accent:#0f9386;--accent2:#1f75b7;--good:#19856d;--warn:#bf751f;--bad:#c44855;--shadow:0 10px 34px rgba(35,75,100,.07);--radius:18px}
+*{box-sizing:border-box}html{color-scheme:light;scroll-behavior:smooth}body{margin:0;color:var(--ink);background:linear-gradient(148deg,#edfafa 0,#f4f8fe 42%,#f9fbfe 100%);font:14px/1.48 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}input,select,textarea{color:var(--ink)}.app{max-width:1580px;margin:auto;padding:22px 24px 52px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:13px}.logo{display:grid;place-items:center;height:48px;width:48px;background:linear-gradient(140deg,#0c9b8e,#3c9ed0);color:white;font-weight:900;border-radius:15px;box-shadow:0 12px 25px #2d9caa29;letter-spacing:-2px;font-size:19px}.brand h1{font-size:23px;letter-spacing:-.7px;margin:0 0 3px}.brand p{color:var(--muted);margin:0;font-size:12px}.topRight{display:flex;gap:8px;align-items:center}.badge{font-size:11px;font-weight:750;padding:7px 11px;background:#e1f4f1;color:#087d72;border-radius:20px;border:1px solid #c9eae3}.grid{display:grid;grid-template-columns:375px minmax(0,1fr);align-items:start;gap:19px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.sidebar{padding:21px;position:sticky;top:10px;max-height:calc(100vh - 20px);overflow:auto;scrollbar-width:thin}.main{padding:22px;min-width:0}.section{border-bottom:1px solid var(--line);padding:0 0 18px;margin:0 0 19px}.section:last-child{border-bottom:0;padding:0;margin:0}.sectionTitle{font-weight:850;font-size:12px;letter-spacing:.025em;color:#41617a;margin-bottom:11px}.es{display:block;font-size:11px;color:#839ca9;font-weight:500;letter-spacing:0;margin:1px 0 0;text-transform:none}.upload{display:flex;align-items:center;gap:10px;padding:13px;border:1px dashed #bdd7e0;background:#f7fbfd;border-radius:12px;cursor:pointer}.upload:hover,.upload.drag{border-color:#0c9f91;background:#effbf8}.upload.success{border-color:#80cfbe;background:#eaf9f3}.uploadIcon{width:38px;height:38px;background:#e3f3f5;color:#0e837c;display:grid;place-items:center;border-radius:11px;font-size:20px;flex:0 0 38px}.upload strong{display:block;font-size:12px}.upload span{color:var(--muted);font-size:11px}.fileMeta{color:var(--muted);margin:8px 0 0;font-size:11px;overflow-wrap:anywhere}.field label{display:block;color:#648094;font-size:11px;margin-bottom:5px}.field input,.field select,.field textarea,.search,.input{width:100%;background:#fff;border:1px solid #d4e3ea;border-radius:10px;padding:9px 10px;outline:none;min-height:39px}.field input:focus,.field select:focus,.field textarea:focus,.input:focus,.search:focus{border-color:#24a99a;box-shadow:0 0 0 3px #19ab9620}.fieldRow{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stationBar{display:flex;gap:7px;flex-wrap:wrap}.stationBtn{font-size:11px;background:#f5f8fb;border:1px solid #dbe7ef;color:#46647a;padding:8px 10px;border-radius:30px;font-weight:750}.stationBtn.active{color:#fff;background:#15998b;border-color:#15998b;box-shadow:0 3px 12px #158d7b30}.stationBtn:hover{border-color:#74bdb4}.stationInputs{margin-top:12px}.stationHeader,.stationInput{display:grid;grid-template-columns:.7fr .85fr .95fr 1fr;gap:6px;align-items:center;font-size:11px;padding:7px 3px}.stationHeader{color:#7592a4;font-size:10px;font-weight:800;border-bottom:1px solid #e1ebf1}.stationInput{border-bottom:1px solid #f0f3f7}.stationInput input{max-width:80px;width:100%;padding:5px;border:1px solid #cedfe8;border-radius:7px}.autoAdd{color:#159084;font-weight:800}.forecastMini{text-align:right;font-weight:800}.freightBox,.historyDetails,.softDetails{padding:11px 12px;background:#f7fafc;border:1px solid #e2ebf0;border-radius:12px;margin-top:11px}.freightBox summary,.historyDetails summary,.softDetails summary{font-weight:850;font-size:11px;cursor:pointer;color:#3c657c}.freightControl{display:grid;gap:9px;margin-top:13px;font-size:11px;color:#4c6980}.freightControl input[type=number]{max-width:130px;border:1px solid #d4e3eb;border-radius:8px;padding:6px;background:white}.freightInfo,.dspCaption,.footerNote{color:var(--muted);font-size:10px;margin-top:8px;line-height:1.5}.modeChoices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.modeBtn{border:1px solid #d6e5ec;background:#f9fbfd;border-radius:11px;text-align:left;padding:11px 9px;font-weight:800;font-size:11px}.modeBtn small{color:#7993a2;display:block;font-size:10px;font-weight:500;margin-top:4px}.modeBtn.active{border-color:#6ebfb4;background:#eaf9f5;color:#08786f}.modeBtn.active small{color:#4a9d91}.message{font-size:11px;line-height:1.6;color:#698294;margin-top:9px;background:#f5f9fc;border:1px solid #e3edf4;border-radius:10px;padding:9px 11px}.message.good{background:#eaf9f3;border-color:#cdeee1;color:#197963}.message.warn{background:#fffaed;border-color:#f2e3c3;color:#9b701d}.message.bad{background:#fff0f1;border-color:#f2d5d7;color:#b13f51}.dspSettings{border:1px solid #e0eaf0;border-radius:10px;margin-top:8px;background:#fff;max-height:275px;overflow:auto;padding:6px}.dspGroupName{font-size:11px;font-weight:800;color:#148e85;margin:9px 3px}.dspRow{display:grid;grid-template-columns:minmax(72px,1fr) 50px 67px 55px;gap:6px;align-items:center;font-size:10px;padding:6px 2px;border-bottom:1px solid #f1f4f6}.dspRow small{display:block;color:#8195a5;font-size:9px}.dspRow input{width:100%;border:1px solid #d1e1e9;padding:5px;border-radius:6px}.dspProjected{text-align:right}.btnRow,.actions{display:flex;flex-wrap:wrap;gap:8px}.btn{border:1px solid #d7e5eb;background:#fff;border-radius:10px;padding:10px 12px;font-size:11px;font-weight:800;color:#426079;display:inline-flex;align-items:center;justify-content:center;gap:6px}.btn:hover:not(:disabled){background:#f0f8fa;border-color:#81c3ca}.btn.primary{background:linear-gradient(110deg,#119c8b,#1986ba);border:0;color:#fff;box-shadow:0 6px 15px #198cb22a}.btn.ghost{background:#e8f8f4;color:#138679;border-color:#ccece5}.btn.sm{padding:7px 9px;font-size:10px}.btnRow .primary{flex:1;min-height:43px}.hero{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;padding:19px 19px;border-radius:15px;background:linear-gradient(112deg,#e7f8f5,#f3faff 75%);border:1px solid #d6ede8}.hero h2{margin:0 0 4px;font-size:19px;letter-spacing:-.4px}.hero p{font-size:11px;color:#6b8998;margin:0}.hero .heroEmblem{font-size:32px;color:#1c9d95}.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin-bottom:17px}.kpi{padding:15px 12px;background:#fff;border:1px solid #e4edf1;border-radius:13px;min-width:0}.kpi .name{font-size:10px;color:#7890a2;font-weight:800;letter-spacing:.035em}.kpi .value{font-size:24px;letter-spacing:-.6px;font-weight:900;margin:6px 0;white-space:nowrap;font-variant-numeric:tabular-nums}.kpi .subv{font-size:10px;color:#88a0b0}.kpi:nth-child(3){background:#f0faf8;border-color:#cce9e0}.kpi:nth-child(3) .value{color:#087f71}.kpi.alert .value{color:#be6970}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:11px;flex-wrap:wrap;margin:17px 0 10px}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{font-size:11px;font-weight:850;background:#f1f6f8;border:1px solid #e3ebf0;color:#607c90;border-radius:8px;padding:9px 11px}.tab.active{background:#dcf5ef;color:#088776;border-color:#b6e7da}.actions .search{min-width:155px;max-width:210px}.tableWrap{width:100%;overflow:auto;border:1px solid #e3ebf1;border-radius:12px;max-height:600px}table{border-collapse:collapse;width:100%;min-width:660px;font-size:12px}th,td{padding:10px 11px;text-align:left;border-bottom:1px solid #edf1f5;vertical-align:middle}thead th{position:sticky;top:0;background:#f4f9fb;border-bottom:1px solid #dfe9ee;color:#37546c;z-index:1;font-size:11px}tbody tr:hover{background:#f8fbfc}.dspCell{font-weight:850}.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}.thBi span{display:block}.thBi span+span{font-size:11px;color:#8ca2b3;font-weight:500}.pill{display:inline-block;border-radius:7px;padding:4px 7px;background:#e7f3f8;color:#527b97;font-weight:800}.pill.over{background:#fff1eb;color:#b97936}.hidden{display:none!important}.empty{padding:22px 12px;color:#98aab7;text-align:center}.rowDSP{background:#eaf7f3;color:#166e66;font-weight:850}.rowRoute{background:#f5fafd;font-weight:700}.rowZip td:nth-child(3){padding-left:22px;color:#557890}.statusCards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}.statusCard{border:1px solid #e0ebf1;border-radius:11px;padding:10px;background:#fafcfd}.statusCard b{display:block;font-size:20px;margin:3px 0;color:#167e7c}.statusCard small{color:#8197a4;font-size:10px}.progress{height:6px;border-radius:99px;background:#e5eff2;overflow:hidden;margin:5px 0}.progress i{display:block;background:#22b69b;height:100%;border-radius:99px}.infoTitle{font-size:13px;font-weight:850;margin:12px 0 6px}.settingsForm{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:9px 0}.settingsForm .wide{grid-column:1/-1}.settingsRow{font-size:11px;padding:9px;border:1px solid #e3ecef;border-radius:9px;background:white;margin-bottom:5px;display:flex;align-items:center;gap:8px;justify-content:space-between}.settingsRow b{font-size:11px}.settingsRow small{color:#7b96a5;font-size:10px}.settingsRow .delete{color:#c44f52;border:1px solid #f1d0d3;background:#fff4f5;border-radius:7px;padding:4px 7px}.manageTable{max-height:250px;overflow:auto}.cardGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.imageCard{border:1px solid #dbe7ed;border-radius:14px;overflow:hidden;background:white}.imageCardHead{padding:10px 13px;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:850}.imageCard img{width:100%;height:auto;max-height:390px;object-fit:contain;background:#fff;display:block;cursor:pointer}.imageCardActions{display:flex;gap:6px;flex-wrap:wrap;padding:9px;border-top:1px solid #e4edf1}.imageCardActions button{flex:1}.overlay{position:fixed;inset:0;background:#edf7fbee;z-index:99;display:none;place-items:center}.overlay.show{display:grid}.overlayBox{padding:35px;border:2px dashed #6abbb2;border-radius:15px;font-weight:850;color:#14897c}.footerNote{margin-top:13px}.note{padding:12px;background:#ecf9f6;border:1px solid #cfece2;border-radius:10px;font-size:11px;color:#4f8380;margin:12px 0}.splitLabel{font-size:10px;color:#7f95a6}.miniStatus{font-size:11px;color:#467486}.smallWarn{font-size:10px;color:#9e6b26}.mobileOnly{display:none}.mobileGenerate{display:none}
+@media(max-width:1120px){.grid{grid-template-columns:330px minmax(0,1fr)}.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.toolbar{display:block}.actions{margin-top:10px}}
+@media(max-width:820px){.app{padding:12px 12px 100px}.mobileGenerate{display:block;position:fixed;bottom:calc(13px + env(safe-area-inset-bottom));left:12px;right:12px;z-index:60;min-height:51px;box-shadow:0 12px 30px #158e993d;border-radius:13px}.topbar{margin-bottom:12px}.brand h1{font-size:19px}.brand p{font-size:10px}.grid{display:flex;flex-direction:column;gap:12px}.sidebar,.main{position:static;width:100%;max-height:none;overflow:visible;padding:14px}.topRight .badge{display:none}.hero{padding:13px}.hero h2{font-size:16px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.kpi{padding:12px}.kpi .value{font-size:20px}.actions .search{max-width:none;flex:1 1 100%}.actions .btn{flex:1 1 30%}.cardGrid{grid-template-columns:1fr}.mobileOnly{display:block}.sectionTitle{font-size:12px}.tableWrap{max-height:520px}table{font-size:11px;min-width:620px}th,td{padding:8px}.btnRow .btn{flex:1}.settingsForm{grid-template-columns:1fr}.settingsForm .wide{grid-column:auto}}
+@media(max-width:410px){.stationHeader,.stationInput{grid-template-columns:.75fr .7fr .8fr 1fr;font-size:10px}.stationInput input{max-width:65px}.modeChoices{grid-template-columns:1fr 1fr}.brand .logo{height:40px;width:40px}.kpi .value{font-size:18px}}
 </style>
 </head>
 <body>
-<div class="overlay" id="overlay"><div class="overlayBox">Drop file to upload</div></div>
+<div class="overlay" id="overlay"><div class="overlayBox">Drop file / 拖放文件</div></div>
 <div class="app">
-  <div class="topbar">
-    <div class="brand"><h1>Pre Alarm V3.8</h1><p>ZIP-first matching · Global / DSP Dynamic / Manual forecast · MIA F6/F9 · FLL ZIP freight split</p></div>
-    <div class="badge">V3.8</div>
-  </div>
-
-  <div class="grid">
-    <aside class="panel sidebar">
-      <div class="section">
-        <div class="sectionTitle">1 · Current Volume<span class="es">Volumen Actual</span></div>
-        <div class="upload" id="volUpload">
-          <div class="uploadIcon">↥</div><div><strong>Upload volume file</strong><span>Excel / CSV · column order does not matter</span></div>
-        </div>
-        <input type="file" id="volInput" accept=".xlsx,.xls,.csv" hidden>
-        <div id="volInfo" class="fileMeta">Waiting for file</div>
-      </div>
-
-      <div class="section">
-        <div class="sectionTitle">2 · ZIP Mapping<span class="es">Mapeo ZIP</span></div>
-        <div class="upload" id="mapUpload">
-          <div class="uploadIcon">⌘</div><div><strong>Upload ZIP mapping</strong><span>ZIP · DSP · Route · station column optional</span></div>
-        </div>
-        <input type="file" id="mapInput" accept=".xlsx,.xls,.csv" hidden>
-        <div id="mapInfo" class="fileMeta">Required · used to match ZIP → DSP / Route automatically.</div>
-      </div>
-
-      <div class="section">
-        <div class="sectionTitle">3 · Global Forecast<span class="es">Pronóstico Global</span></div>
-        <div class="field">
-          <label>Global Add Volume (10k units)</label>
-          <input id="globalAddVol" type="number" value="1.0" step="0.1">
-        </div>
-        <div id="globalEquiv" class="message">Equivalent: 10,000 packages</div>
-        <div class="sectionTitle" style="margin-top:14px">Eligible Stations · current ≥ 3,000<span class="es">Estaciones Elegibles · actual ≥ 3,000</span></div>
-        <div class="stationBar" id="stationBar"></div>
-        <div id="stationInputs" class="stationInputs"></div>
-        <details class="freightBox" id="fllFreightSettings">
-          <summary>FLL Freight Split · División de Carga FLL</summary>
-          <div class="freightControl">
-            <label><input id="fllFreightEnabled" type="checkbox" checked> Automatically split F21–F26 / Separar rutas F21–F26</label>
-            <label for="fllFreightPercent">Freight % / Porcentaje de carga</label>
-            <input id="fllFreightPercent" type="number" min="0" max="100" step="0.01" value="17.28" inputmode="decimal">
-          </div>
-          <div class="freightInfo" id="fllFreightHelp">Intensity reference: Oct 22, 2026, FLL freight 17.28%. ZIP-specific ratios are from Oct 23 actuals (ZIP 33311 → F24 68.64%). Each ZIP keeps its own parcel total. The final FLL freight percentage may differ when ZIP mix changes. Adjust the intensity only when needed.</div>
-        </details>
-      </div>
-
-      <div class="section">
-        <div class="sectionTitle">4 · DSP Allocation Mode<span class="es">Modo de distribución por DSP</span></div>
-        <div class="modeChoices" id="forecastModes" role="group" aria-label="Forecast allocation mode">
-          <button class="modeBtn active" type="button" data-mode="global">Global Proportional<small>Proporcional global</small></button>
-          <button class="modeBtn" type="button" data-mode="dynamic">DSP Dynamic<small>Dinámico por DSP</small></button>
-          <button class="modeBtn" type="button" data-mode="manual">Manual Adjustment<small>Ajuste manual</small></button>
-        </div>
-        <div class="message" id="modeExplanation">Original mode: same growth rate across the DSPs within each station. Exact station Forecast is preserved.</div>
-        <details class="historyDetails" id="historyDetails">
-          <summary>Historical Volume (optional) / Volumen histórico (opcional)</summary>
-          <label class="hUpload" for="historyInput">↥ Upload 2–14 daily Volume files / Subir archivos históricos</label>
-          <input id="historyInput" type="file" multiple accept=".xlsx,.xls,.csv" hidden>
-          <div id="historyStatus" class="histStatus">Dynamic mode learns DSP share trends from 2 or more historical daily files. If there is no history, it uses today's shares (no invented trend).</div>
-          <div class="dspCaption">Select oldest → newest. Files named YYYY-MM-DD are sorted automatically. Mapping must be uploaded first. History stays in this browser session only.</div>
-          <button id="clearHistoryBtn" type="button" class="btn" style="margin-top:8px">Clear history / Borrar historial</button>
-        </details>
-        <details class="historyDetails" id="dspSettingsDetails">
-          <summary>DSP Weights &amp; Fine Tune / Pesos y ajuste de DSP</summary>
-          <div class="dspCaption">Fine Tune (%) changes the DSP's share of the <b>station's additional packages</b>, not its existing packages. 0 = automatic; +20 favors this DSP by 20%. Other DSPs rebalance so station totals never change.</div>
-          <div class="dspSettings" id="dspSettings"></div>
-          <button id="clearDSPBiasBtn" type="button" class="btn" style="margin-top:9px">Reset DSP adjustments / Restablecer ajustes</button>
-        </details>
-      </div>
-
-      <div class="section">
-        <div class="sectionTitle">5 · Driver Planning<span class="es">Planificación de Conductores</span></div>
-        <div class="fieldRow">
-          <div class="field"><label>Packages / driver</label><input id="driverCap" type="number" value="180" min="1" step="1"></div>
-          <div class="field"><label>Rounding</label><input value="Exact total" disabled></div>
-        </div>
-      </div>
-
-      <div class="btnRow">
-        <button id="runBtn" class="btn primary" disabled>Generate Forecast / Generar Pronóstico</button>
-        <button id="resetBtn" class="btn">Reset / Reiniciar</button>
-      </div>
-      <div id="diag" class="message">Upload a volume file to begin.</div>
-    </aside>
-
-    <main class="panel main">
-      <div class="kpis">
-        <div class="kpi"><div class="name">CURRENT</div><div class="value" id="kpiCurrent">—</div><div class="subv" id="kpiCurrentSub">selected stations</div></div>
-        <div class="kpi"><div class="name">ADDED</div><div class="value" id="kpiAdded">—</div><div class="subv">planned packages</div></div>
-        <div class="kpi"><div class="name">FORECAST</div><div class="value" id="kpiForecast">—</div><div class="subv">exact allocated total</div></div>
-        <div class="kpi"><div class="name">DSPs</div><div class="value" id="kpiDSP">—</div><div class="subv">mapped DSPs</div></div>
-        <div class="kpi alert"><div class="name">UNMAPPED</div><div class="value" id="kpiUnmapped">—</div><div class="subv">ZIP / mapping issues</div></div>
-      </div>
-
-      <div class="toolbar">
-        <div class="tabs" id="tabs">
-          <button class="tab active" data-tab="detail">Route / ZIP Detail · Detalle Ruta / ZIP</button>
-          <button class="tab" data-tab="unmapped">Unmapped · Sin Mapear</button>
-        </div>
-        <div class="actions">
-          <input class="search" id="searchInput" placeholder="Search DSP / route / ZIP">
-          <button class="btn" id="copyBtn" disabled>Copy / Copiar</button>
-          <button class="btn" id="exportBtn" disabled>Export Excel / Exportar Excel</button>
-          <button class="btn" id="imageBtn" disabled>Export Images / Exportar Imágenes</button>
-        </div>
-      </div>
-
-      <div id="detailView" class="tableWrap">
-        <table>
-          <thead><tr>
-            <th><span class="thBi"><span>DSP</span><span>DSP</span></span></th>
-            <th><span class="thBi"><span>Route</span><span>Ruta</span></span></th>
-            <th><span class="thBi"><span>ZIP</span><span>Código Postal</span></span></th>
-            <th class="num"><span class="thBi"><span>Forecast</span><span>Pronóstico</span></span></th>
-            <th class="num"><span class="thBi"><span>Recommended Drivers</span><span>Conductores Recomendados</span></span></th>
-          </tr></thead>
-          <tbody id="detailBody"></tbody>
-        </table>
-      </div>
-
-      <div id="unmappedView" class="tableWrap hidden">
-        <table>
-          <thead><tr>
-            <th><span class="thBi"><span>Type</span><span>Tipo</span></span></th>
-            <th><span class="thBi"><span>Station</span><span>Estación</span></span></th>
-            <th><span class="thBi"><span>ZIP</span><span>Código Postal</span></span></th>
-            <th><span class="thBi"><span>Details</span><span>Detalles</span></span></th>
-            <th class="num"><span class="thBi"><span>Rows</span><span>Filas</span></span></th>
-          </tr></thead>
-          <tbody id="unmappedBody"></tbody>
-        </table>
-      </div>
-      <div id="resultNote" class="footerNote">Current Volume is ZIP-first and may change column order/name. Missing Station can be inferred from Mapping when safe; DSP / Route always come from ZIP Mapping. Station target volume follows the original Pre Alarm multiplier. DSP Dynamic uses historical DSP share changes to divide the station-level addition; manual bias is optional. Without sufficient history Dynamic falls back to the current DSP share. MIA PFF/PFC route profiles were refreshed from Oct 22 actuals (F6 and F9 now PFF). FLL F21–F26 freight uses historical Oct 23 ZIP-level shares; ZIP and station Forecast totals are preserved. Historical percentages are estimates, not guaranteed daily results. MIA PFF now includes F6 and F9 (Oct 22 route mix).</div>
-    </main>
-  </div>
+  <header class="topbar"><div class="brand"><div class="logo">PA</div><div><h1>Pre Alarm <span style="color:#119c8b">Intelligence</span></h1><p>按路区占比预测 · Route-first Forecasting · 手机可用</p></div></div><div class="topRight"><span class="badge">V4.1 · BETA 中英双语</span><button class="btn sm" id="settingsExportBtn">Export Settings / 导出设置</button></div></header>
+  <div class="grid"><aside class="panel sidebar">
+    <div class="section"><div class="sectionTitle">01 / Current Volume <span class="es">当前货量</span></div>
+      <div class="upload" id="volUpload"><div class="uploadIcon">⇧</div><div><strong>Upload Current Volume / 上传当前货量</strong><span>支持 Excel / CSV，或使用上次保存的基准数据</span></div></div><input type="file" id="volInput" accept=".xlsx,.xls,.csv" hidden>
+      <div id="volInfo" class="fileMeta">No file selected / 尚未选择文件</div><button class="btn ghost sm" id="quickBtn" type="button" style="margin-top:9px">↗ Quick Forecast / 历史基准快速预报</button><div id="quickStatus" class="fileMeta">使用历史数据临时预估，无需下载今日报表（非今日实际数据）。</div>
+    </div>
+    <div class="section"><div class="sectionTitle">02 / ZIP Mapping <span class="es">邮编与路区映射</span></div><div class="upload" id="mapUpload"><div class="uploadIcon">⌘</div><div><strong>Upload ZIP Mapping / 上传邮编映射表</strong><span>ZIP → Route → DSP · 自动识别列顺序和表头</span></div></div><input type="file" id="mapInput" accept=".xlsx,.xls,.csv" hidden><div id="mapInfo" class="fileMeta">Saved mapping loads on this device / 自动读取本机已保存的映射表</div><div class="fileMeta" id="mapSavedStatus"></div></div>
+    <div class="section"><div class="sectionTitle">03 / Global Forecast <span class="es">全网货量预测</span></div><div class="field"><label>Global Added Volume (10k units) / 全网新增货量（单位：万票）</label><input id="globalAddVol" type="number" value="1.0" step="0.1"></div><div id="globalEquiv" class="message">Equivalent: 10,000 packages / 相当于新增 10,000 票</div><div class="sectionTitle" style="margin:15px 0 10px">Eligible Stations ≥ 3,000 <span class="es">站点货量至少 3,000 票 · 默认不选，手动选择</span></div><div class="stationBar" id="stationBar"></div><div id="stationInputs" class="stationInputs"></div><details id="fllFreightSettings" class="freightBox"><summary>FLL Freight Split / FLL 货代拆分比例</summary><div class="freightControl"><label><input type="checkbox" id="fllFreightEnabled" checked> Apply ZIP-level split when Route is unknown / 当天无准确路区时按邮编货代比例拆分</label><label>Freight Ratio (%) / 货代拆分参考比例 (%) <input type="number" id="fllFreightPercent" min="0" max="100" step=".01" value="17.54"></label></div><div id="fllFreightHelp" class="freightInfo">Only when daily Route is missing / 仅在今日路区缺失时采用历史比例；保留邮编总量，不保证等于当日真实比例。</div></details></div>
+    <div class="section"><div class="sectionTitle">04 / Forecast Mode <span class="es">预测模式</span></div><div class="modeChoices" id="forecastModes"><button class="modeBtn active" data-mode="route" type="button">Daily Route Share<small>按当天路区占比分配</small></button><button class="modeBtn" data-mode="global" type="button">Global Proportional<small>全网等比例增加</small></button><button class="modeBtn" data-mode="dynamic" type="button">DSP Dynamic<small>依据历史数据动态分配</small></button><button class="modeBtn" data-mode="manual" type="button">Manual Weights<small>手动调整 DSP 权重</small></button></div><div id="modeExplanation" class="message">Daily Route Share / 默认按各路区当天占站点的货量比例增加。</div>
+      <details class="historyDetails" id="historyDetails"><summary>Historical Volume (2–14 days) / 历史货量（2–14天）</summary><label class="upload" style="margin-top:8px" for="historyInput">⇧ Upload History / 上传历史数据</label><input id="historyInput" type="file" accept=".xlsx,.xls,.csv" multiple hidden><div class="fileMeta" id="historyStatus">History optional / 历史文件可选，未上传时不会臆测增长趋势。</div><button class="btn sm" type="button" id="clearHistoryBtn">Clear History / 清除历史数据</button></details><details class="softDetails" id="dspSettingsDetails"><summary>DSP Weight Adjustment / DSP 权重微调</summary><div id="dspSettings" class="dspSettings"></div><button id="clearDSPBiasBtn" type="button" class="btn sm">Reset Weights / 重置权重</button></details>
+    </div>
+    <div class="section"><div class="sectionTitle">05 / Route Assignment <span class="es">路区归属与百分比分配</span></div><div class="note">Changing DSP ownership does not change Route volume / 更换 DSP 不改变路区货量；多个 DSP 的占比合计必须为 100%。</div><div class="settingsForm"><div class="field"><label>Station / 站点</label><input id="assignStation" class="input" placeholder="FLL" maxlength="3"></div><div class="field"><label>Route / 路区</label><input id="assignRoute" class="input" placeholder="F24"></div><div class="field wide"><label>DSP Share / DSP 分配比例，例如 FLL-OTD02:70, FLL-WME02:30</label><input id="assignShares" class="input" placeholder="FLL-OTD02:100"></div></div><div class="btnRow"><button class="btn ghost" id="saveAssignmentBtn">Save Assignment / 保存归属</button><button class="btn" id="deleteAssignmentBtn">Remove Rule / 删除规则</button></div><div id="assignmentList" class="manageTable" style="margin-top:10px"></div></div>
+    <div class="section"><div class="sectionTitle">06 / Route Fine Tune <span class="es">路区预测微调</span></div><div class="fileMeta">Adjust packages (+/−); locked routes keep their value / 按票数增减，锁定路区保持指定预报量，其余路区在站点内自动重新平衡。</div><div id="routeTuneList" class="dspSettings"><div class="dspPrompt">Generate Forecast first / 请先生成预报，再调整路区目标。</div></div><div class="btnRow" style="margin-top:8px"><button class="btn sm" id="clearRouteTuneBtn">Reset Route Tunes / 重置路区微调</button></div></div>
+    <div class="section"><div class="sectionTitle">07 / Drivers & Settings <span class="es">司机与系统设置</span></div><div class="fieldRow"><div class="field"><label>Packages per Driver / 每名司机配送票数</label><input id="driverCap" type="number" min="1" value="180"></div><div class="field"><label>Forecast Date / 预报日期</label><input id="forecastDate" type="date"></div></div><div class="btnRow" style="margin-top:10px"><button id="settingsImportBtn" class="btn sm">Import Settings / 导入设置</button><input id="settingsImportFile" type="file" accept=".json" hidden><button class="btn sm" id="saveSettingsBtn">Save Settings / 保存设置</button></div></div>
+    <div class="btnRow" style="margin-bottom:12px"><button class="btn primary" id="runBtn" disabled>✦ Generate Forecast / 生成预报</button><button class="btn" id="resetBtn">Reset / 重置</button></div><div id="diag" class="message">Upload Current Volume to begin / 请先上传当前货量文件。</div>
+  </aside>
+  <main class="panel main"><div class="hero"><div><h2>Smart Delivery Forecast / 智能配送货量预报</h2><p>Route-based forecasting, editable DSP allocation & shareable PNGs / 按路区占比预测、灵活调配 DSP，直接预览分享预报图片。</p></div><div class="heroEmblem">◈</div></div>
+    <div class="kpis"><div class="kpi"><div class="name">CURRENT / 当前货量</div><div class="value" id="kpiCurrent">—</div><div class="subv" id="kpiCurrentSub">selected stations / 已选站点</div></div><div class="kpi"><div class="name">ADDED / 新增货量</div><div class="value" id="kpiAdded">—</div><div class="subv">selected stations / 已选站点</div></div><div class="kpi"><div class="name">FORECAST / 预报总量</div><div class="value" id="kpiForecast">—</div><div class="subv">exact allocated total / 精确分配总量</div></div><div class="kpi"><div class="name">DSPs / 配送商数量</div><div class="value" id="kpiDSP">—</div><div class="subv">已选择 / selected</div></div><div class="kpi alert"><div class="name">NOT MAPPED / 未匹配货量</div><div class="value" id="kpiUnmapped">—</div><div class="subv">excluded packages / 未分配包裹</div></div></div>
+    <div class="infoTitle">Reconciliation & Data Quality / 货量对账与数据质量</div><div id="reconciliation" class="statusCards"><div class="statusCard"><small>Coverage / 匹配覆盖率</small><b>—</b></div><div class="statusCard"><small>Total Check / 总量对账</small><b>—</b></div><div class="statusCard"><small>Route Evidence / 当天路区数据</small><b>—</b></div></div><div id="routeWarnings" class="message">Forecast diagnostics appear here / 预报异常与校验信息显示在这里。</div>
+    <div class="toolbar"><div id="tabs" class="tabs"><button class="tab active" data-tab="detail">Route / ZIP · 路区 / 邮编</button><button class="tab" data-tab="unmapped">Warnings / 异常提醒</button><button class="tab" data-tab="accuracy">Accuracy / 准确率对比</button><button class="tab" data-tab="images">DSP Images / DSP 图片</button></div><div class="actions"><input id="searchInput" class="search" placeholder="Search DSP / Route / ZIP · 搜索配送商 / 路区 / 邮编"><button id="copyBtn" class="btn" disabled>Copy / 复制</button><button id="exportBtn" class="btn" disabled>Export Excel / 导出 Excel</button><button id="imageBtn" class="btn ghost" disabled>Export All PNG ZIP / 打包图片</button></div></div>
+    <div id="detailView" class="tableWrap"><table><thead><tr><th><span class="thBi"><span>DSP</span><span>配送商</span></span></th><th><span class="thBi"><span>Route</span><span>路区</span></span></th><th><span class="thBi"><span>ZIP</span><span>邮编</span></span></th><th class="num"><span class="thBi"><span>Forecast</span><span>预报票数</span></span></th><th class="num"><span class="thBi"><span>Recommended Drivers</span><span>推荐司机数量</span></span></th></tr></thead><tbody id="detailBody"></tbody></table></div>
+    <div id="unmappedView" class="tableWrap hidden"><table><thead><tr><th>Type / 类型</th><th>Station / 站点</th><th>ZIP</th><th>Details / 详情</th><th class="num">Packages / 票数</th></tr></thead><tbody id="unmappedBody"></tbody></table></div>
+    <div id="accuracyView" class="hidden"><div class="note">Upload actual report for the same date and scope. Route coverage ZIP lists are not parcel ZIPs. / 上传同一日期、同一统计范围的实际货量，按 DSP / Route 对比；路区覆盖邮编列表不视为逐票邮编。</div><div class="btnRow"><label class="btn ghost" for="actualInput">⇧ Upload Actual / 上传真实货量</label><input id="actualInput" type="file" accept=".xlsx,.xls,.csv" hidden><label style="font-size:11px;display:flex;align-items:center;gap:6px"><input type="checkbox" id="actualZipIsParcel"> ZIP is parcel destination ZIP / 邮编是每票包裹的真实目的邮编</label><button id="saveActualCalibrationBtn" class="btn">Save Route Ratios / 保存路区占比</button><button id="clearActualBtn" class="btn sm">Clear / 清除</button></div><div class="field" style="max-width:300px;margin:10px 0"><label>Forecast to Compare / 选择对比的预报</label><select id="accuracyForecastSelect"><option value="current">Current Generated Forecast / 当前预报</option></select></div><div id="actualStatus" class="message">No Actual file loaded / 尚未上传实际货量文件。</div><div id="accuracySummary" class="statusCards"></div><div id="accuracyTable" class="tableWrap" style="margin-top:9px"></div></div>
+    <div id="imagesView" class="hidden"><div class="note">PNG images appear directly here. On mobile, tap Share PNG; Copy PNG may need browser permission. / 图片直接显示在页面；手机可点击分享，复制 PNG 可能需要浏览器授权，也可单独下载。</div><div class="btnRow" style="margin:10px 0"><button id="showImagesBtn" class="btn primary">Create PNG Previews / 生成图片预览</button><button id="refreshImagesBtn" class="btn">Refresh Images / 刷新图片</button></div><div id="imagesStatus" class="message">Run Forecast first / 请先生成预报，再创建图片预览。</div><div class="cardGrid" id="imageCards"></div></div>
+    <div class="footerNote" id="resultNote">V4.1.1 BETA · Chinese + English UI / 中英文双语界面。站点门槛 ≥3,000，默认不选；优先按当天路区货量占比预测，历史拆分会明确标记；本机设置支持 JSON 导入/导出；不保存原始运单信息。导出的每张 DSP 图片继续保留英文 + 西班牙语表头。</div>
+  </main></div>
+  <button id="mobileGenerateBtn" class="btn primary mobileOnly mobileGenerate" disabled>✦ Generate Forecast / 生成预报</button>
 </div>
-
 <script>
-"use strict";
+"use strict";"use strict";
 const $ = id => document.getElementById(id);
 const fmt = n => Number(n||0).toLocaleString("en-US");
 const pct = n => Number.isFinite(n) ? (n*100).toFixed(1)+"%" : "—";
@@ -219,7 +58,7 @@ const toNumber = v => { const s=String(v??"").trim().replace(/,/g,""); if(!s)ret
 
 const FIELD_ALIASES={
   zip:["zip","zipcode","zip5","postalcode","postcode","destinationzip","destzip","deliveryzip","recipientzip","consigneezip","customerzip","邮编","邮政编码"],
-  dsp:["dsp","dspname","dspcode","deliveryserviceprovider","deliverypartner","serviceprovider","carrier","承运商","派送商","配送商"],
+  dsp:["dsp","dspname","dspcode","deliveryserviceprovider","deliverypartner","serviceprovider","carrier","承运商","派送商","配送商","车队","车队名称"],
   route:["route","routecode","routeid","territory","territorycode","territoryid","deliveryroute","destinationroute","deliveryarea","zone","目的路区","路区","路线","区域"],
   station:["station","stationcode","stationname","destinationstation","deststation","deliverystation","destinationsite","site","sitecode","node","目的站点","目的站","目的场站","派送站点","站点","场站"],
   count:["currentvolume","packagecount","packages","parcelcount","parcels","shipmentcount","shipments","pkgcount","totalpackages","volume","货量","包裹数","件数"]
@@ -260,7 +99,7 @@ let discoveredStations=new Set(DEFAULT_STATIONS), stationSelected=new Set();
 let globalAddUnits=1.0, fineTuneByStation={};
 let lastResult=null;
 let activeTab="detail";
-let forecastMode="global";
+let forecastMode="route";
 let historyDays=[];
 let dspAdjustment={};
 let dspBaseCache={};
@@ -285,6 +124,7 @@ function detectSchemaFromHeaders(headers){
   return schema;
 }
 function schemaFitness(schema,mode){
+  if(mode==="actual")return (schema.route?160:0)+(schema.dsp?145:0)+(schema.station?40:0)+(schema.count?6:0)+(schema.zip?4:0);
   if(mode==="mapping"){
     const required=(schema.zip?1:0)+(schema.dsp?1:0)+(schema.route?1:0);
     return required*100+(schema.station?12:0);
@@ -328,7 +168,7 @@ function readSpreadsheetSmart(file,mode){
     reader.onerror=()=>reject(new Error("Unable to read file"));
     reader.onload=e=>{
       try{
-        const wb=XLSX.read(new Uint8Array(e.target.result),{type:"array"});
+        const wb=XLSX.read(new Uint8Array(e.target.result),{type:"array",nodim:true});
         let best=null;
         for(const name of wb.SheetNames){
           const aoa=XLSX.utils.sheet_to_json(wb.Sheets[name],{header:1,defval:"",raw:false,blankrows:false});
@@ -344,9 +184,9 @@ function readSpreadsheetSmart(file,mode){
         let parsed=rowObjectsFromAOA(best.aoa,best.headerIndex);
         let schema=detectSchemaFromHeaders(parsed.headers);
         schema=inferMissingFields(schema,parsed.headers,parsed.rows,mode);
-        const ok=mode==="mapping"?(schema.zip&&schema.dsp&&schema.route):Boolean(schema.zip);
+        const ok=mode==="mapping"?(schema.zip&&schema.dsp&&schema.route):mode==="actual"?Boolean(schema.route && (schema.dsp||schema.station)):Boolean(schema.zip);
         if(!ok){
-          const need=mode==="mapping"?"ZIP, DSP and Route":"ZIP";
+          const need=mode==="mapping"?"ZIP, DSP and Route":mode==="actual"?"Route and DSP or Station":"ZIP";
           throw new Error(`Could not identify ${need}. Column order can change; Current Volume only needs a recognizable ZIP field, and missing routing fields can come from ZIP Mapping.`);
         }
         resolve({rows:parsed.rows,schema,meta:{sheetName:best.name,headerRow:best.headerIndex+1,headers:parsed.headers}});
@@ -523,9 +363,9 @@ function clearOutput(){
 }
 function updateGlobalEquiv(){
   const total=globalTotalVolume(), add=globalAddPackages();
-  if(!total){$("globalEquiv").textContent=`Equivalent: ${fmt(add)} packages`;return;}
+  if(!total){$("globalEquiv").textContent=`Equivalent / 对应新增：${fmt(add)} packages / 票`;return;}
   const m=globalMultiplier(), growth=(m-1)*100;
-  $("globalEquiv").innerHTML=`File total: <b>${fmt(total)}</b> · Equivalent: <b>${add>=0?"+":""}${fmt(add)}</b><br>Global multiplier: <b>${m.toFixed(4)}x</b> (${growth>=0?"+":""}${growth.toFixed(2)}%)`;
+  $("globalEquiv").innerHTML=`File Total / 原始总货量：<b>${fmt(total)}</b> · Added / 新增：<b>${add>=0?"+":""}${fmt(add)}</b><br>Global Multiplier / 全网增长倍率：<b>${m.toFixed(4)}x</b> (${growth>=0?"+":""}${growth.toFixed(2)}%)`;
 }
 function stationSort(a,b,counts={}){
   const ia=DEFAULT_STATIONS.indexOf(a), ib=DEFAULT_STATIONS.indexOf(b);
@@ -762,24 +602,25 @@ function selectedDSPAllocation(){
 function renderDSPControls(){
   const panel=$("dspSettings");panel.innerHTML="";
   const modeMessage={
-    global:"Original mode: the same growth rate across the DSPs within each station. Exact station totals are preserved.",
+    route:"Route-first: allocate by today\'s Route share / 按当天各路区货量占比分配新增票数，历史拆分比例将单独标记。",
+    global:"Global proportional / 全站各 DSP 同比例增长，站点预报总量保持精确一致。",
     dynamic:historyDays.length<2?"DSP Dynamic needs at least 2 historical daily files. Until then, it uses today's DSP shares; optional manual tuning still works.":`DSP Dynamic uses ${historyDays.length} historical day(s) to adjust DSP shares. Recent share ÷ older share is capped and dampened; station totals remain exact.`,
     manual:"Manual mode: enter a DSP preference (%). The station's additional packages are redistributed, without changing that station's total."
   };
   $("modeExplanation").textContent=modeMessage[forecastMode];
   document.querySelectorAll(".modeBtn").forEach(x=>x.classList.toggle("active",x.dataset.mode===forecastMode));
   const items=selectedDSPAllocation(),selected=[...new Set(items.map(x=>x.station))];
-  if(!items.length){panel.innerHTML='<div class="dspPrompt">Upload both files and select a station to view DSP adjustments.</div>';return;}
+  if(!items.length){panel.innerHTML='<div class="dspPrompt">Upload Volume and Mapping, then select a station / 请上传货量和映射表并选择站点，查看 DSP 调整。</div>';return;}
   for(const st of selected){
-    const title=document.createElement("div");title.className="dspGroupName";title.textContent=st+" · "+items.filter(x=>x.station===st).length+" DSPs (before freight/PFC split)";panel.appendChild(title);
+    const title=document.createElement("div");title.className="dspGroupName";title.textContent=st+" · "+items.filter(x=>x.station===st).length+" DSPs / 配送商（拆分 PFC/PFF 与货代之前）";panel.appendChild(title);
     for(const item of items.filter(x=>x.station===st).sort((a,b)=>b.current-a.current||a.dsp.localeCompare(b.dsp))){
       const row=document.createElement("div");row.className="dspRow";
       const bias=getDSPBias(st,item.dsp);
       const growth=item.current?((item.target/item.current-1)*100):0;
-      row.innerHTML=`<div class="dspName"><b>${esc(item.dsp)}</b><small>Current ${fmt(item.current)}</small></div>
-        <div><small>Trend</small>${(item.trend||1).toFixed(2)}x</div>
-        <div><small>Fine tune %</small><input type="number" min="-90" max="300" step="5" value="${esc(bias)}" aria-label="${esc(item.dsp)} DSP preference percentage"></div>
-        <div class="dspProjected"><small>Forecast</small><b>${fmt(item.target)}</b><small>${growth>=0?"+":""}${growth.toFixed(1)}%</small></div>`;
+      row.innerHTML=`<div class="dspName"><b>${esc(item.dsp)}</b><small>Current / 当前 ${fmt(item.current)}</small></div>
+        <div><small>Trend / 趋势</small>${(item.trend||1).toFixed(2)}x</div>
+        <div><small>Adjust % / 微调%</small><input type="number" min="-90" max="300" step="5" value="${esc(bias)}" aria-label="${esc(item.dsp)} DSP preference percentage"></div>
+        <div class="dspProjected"><small>Forecast / 预报</small><b>${fmt(item.target)}</b><small>${growth>=0?"+":""}${growth.toFixed(1)}%</small></div>`;
       row.querySelector("input").onchange=e=>{
         const val=Number(e.target.value);
         dspAdjustment[st+"\u0001"+item.dsp]=Number.isFinite(val)?Math.max(-90,Math.min(300,val)):0;
@@ -791,21 +632,21 @@ function renderDSPControls(){
 }
 function clearHistory(){
   historyDays=[];$("historyInput").value="";
-  $("historyStatus").textContent="No historical files loaded. Dynamic mode falls back to proportional DSP shares.";
+  $("historyStatus").textContent="No history loaded / 尚未上传历史数据，动态模式将按当前 DSP 货量占比预测。";
   renderDSPControls();invalidate();
 }
 async function handleHistory(files){
   if(historyBusy)return;
-  if(!zipMap.size){alert("Upload ZIP Mapping before historical Volume files.");return;}
+  if(!zipMap.size){alert("Upload ZIP Mapping first / 请先上传 ZIP 映射表，再上传历史货量文件。");return;}
   const input=Array.from(files||[]).filter(f=>/\.(xlsx|xls|csv)$/i.test(f.name));
-  if(input.length<2||input.length>14){alert("Select between 2 and 14 daily historical files.");return;}
+  if(input.length<2||input.length>14){alert("Select 2–14 historical files / 请选择2至14份每日历史文件。");return;}
   const allDateNamed=input.every(f=>historyDateFromFilename(f.name));
   const sorted=allDateNamed?input.sort((a,b)=>historyDateFromFilename(a.name).localeCompare(historyDateFromFilename(b.name))):input;
-  historyBusy=true;$("historyStatus").textContent="Reading historical files…";
+  historyBusy=true;$("historyStatus").textContent="Reading Historical Volume… / 正在读取历史数据…";
   try{
     const days=[];
     for(let i=0;i<sorted.length;i++){
-      $("historyStatus").textContent=`Reading history ${i+1}/${sorted.length}: ${sorted[i].name}`;
+      $("historyStatus").textContent=`Reading history / 读取历史 ${i+1}/${sorted.length}: ${sorted[i].name}`;
       const parsed=await readSpreadsheetSmart(sorted[i],"volume");
       const stats=countDSPsForInput(parsed.rows,parsed.schema);
       if(stats.mapped<=0)throw new Error(`${sorted[i].name}: no rows could match the ZIP Mapping`);
@@ -815,7 +656,7 @@ async function handleHistory(files){
     const t=days.reduce((sum,x)=>sum+x.total,0),m=days.reduce((sum,x)=>sum+x.mapped,0);
     $("historyStatus").textContent=`✓ Loaded ${days.length} historical day(s): ${days[0].name} → ${days.at(-1).name}. Mapped ${fmt(m)}/${fmt(t)} (${t?(100*m/t).toFixed(1):0}%); only matched records affect DSP trends.${allDateNamed?" Dates sorted from filenames.":" Using selected file order (oldest first)."}`;
     renderDSPControls();invalidate();
-  }catch(e){historyDays=[];$("historyStatus").textContent="History loading failed: "+e.message;alert("Could not load history: "+e.message);renderDSPControls();invalidate();}
+  }catch(e){historyDays=[];$("historyStatus").textContent="History loading failed / 历史数据读取失败："+e.message;alert("Could not load history / 无法加载历史数据："+e.message);renderDSPControls();invalidate();}
   finally{historyBusy=false;}
 }
 
@@ -824,7 +665,7 @@ function renderStations(){
   const counts=stationCounts(false);
   const list=eligibleStations().sort((a,b)=>stationSort(a,b,counts));
   if(!list.length){
-    bar.innerHTML=`<div class="message">No station has at least ${fmt(STATION_DISPLAY_MIN)} packages.</div>`;
+    bar.innerHTML=`<div class="message">No eligible station / 没有站点达到 ${fmt(STATION_DISPLAY_MIN)} 票门槛。</div>`;
     return;
   }
   for(const st of list){
@@ -838,31 +679,31 @@ function renderStationInputs(){
   updateGlobalEquiv();
   const rawCounts=stationCounts(false), mappedCounts=stationCounts(true), m=globalMultiplier();
   const selected=[...stationSelected].filter(st=>(rawCounts[st]||0)>=STATION_DISPLAY_MIN).sort((a,b)=>stationSort(a,b,rawCounts));
-  if(!selected.length){ box.innerHTML='<div class="message">Select at least one eligible station.</div>'; return; }
-  const hdr=document.createElement("div");hdr.className="stationHeader";hdr.innerHTML='<span>Station<br><small>Estación</small></span><span>Auto add<br><small>Aumento auto.</small></span><span>Fine tune ± packages<br><small>Ajuste ± paquetes</small></span><span style="text-align:right">Forecast<br><small>Pronóstico</small></span>';box.appendChild(hdr);
+  if(!selected.length){ box.innerHTML='<div class="message">Select a Station / 请至少选择一个符合条件的站点。</div>'; return; }
+  const hdr=document.createElement("div");hdr.className="stationHeader";hdr.innerHTML='<span>Station<br><small>站点</small></span><span>Auto add<br><small>自动新增</small></span><span>Fine tune ± packages<br><small>微调 ± 票</small></span><span style="text-align:right">Forecast<br><small>预报票数</small></span>';box.appendChild(hdr);
   for(const st of selected){
     if(fineTuneByStation[st]===undefined)fineTuneByStation[st]=0;
-    const current=mappedCounts[st]??rawCounts[st]??0;
+    const current=rawCounts[st]??0;
     const autoTarget=Math.round(current*m);
     const autoAdd=autoTarget-current;
     const tune=Math.round(Number(fineTuneByStation[st])||0);
     const forecast=Math.max(0,autoTarget+tune);
     const row=document.createElement("div"); row.className="stationInput";
-    row.innerHTML=`<b>${esc(st)}</b><span class="autoAdd">${autoAdd>=0?"+":""}${fmt(autoAdd)}</span><input type="number" step="100" value="${esc(tune)}" title="Optional station adjustment in packages"><div class="forecastMini">→ ${fmt(forecast)}</div>`;
+    row.innerHTML=`<b>${esc(st)}</b><span class="autoAdd">${autoAdd>=0?"+":""}${fmt(autoAdd)}</span><input type="number" step="100" value="${esc(tune)}" title="Optional station adjustment / 可选：按票数微调站点预测"><div class="forecastMini">→ ${fmt(forecast)}</div>`;
     const inp=row.querySelector("input"); inp.oninput=()=>{fineTuneByStation[st]=Math.round(Number(inp.value)||0);const next=Math.max(0,autoTarget+fineTuneByStation[st]);row.querySelector(".forecastMini").textContent=`→ ${fmt(next)}`;renderDSPControls();invalidate();};
     box.appendChild(row);
   }
-  const hint=document.createElement("div"); hint.className="footerNote"; hint.textContent="Auto add uses the same global multiplier as the original MIA01 Pre Alarm. Fine tune is optional and is entered in packages (+ / −)."; box.appendChild(hint);
+  const hint=document.createElement("div"); hint.className="footerNote"; hint.textContent="Auto added volume uses the global multiplier / 自动新增依照原版全网统一倍率；可以按票数（+/−）进行站点微调。"; box.appendChild(hint);
 }
-function updateReady(){
+function updateReadyBase(){
   const ready=volumeData.length>0&&zipMap.size>0&&stationSelected.size>0;
   $("runBtn").disabled=!ready;
-  if(ready) $("diag").textContent="Ready. Global added volume will be applied proportionally; DSP / Route are taken from ZIP Mapping.";
-  else if(volumeData.length&&!zipMap.size) $("diag").textContent="Upload the ZIP Mapping file. DSP / Route will be matched from it automatically.";
-  else if(volumeData.length&&zipMap.size&&!stationSelected.size) $("diag").textContent="Select one or more eligible stations to generate the forecast.";
+  if(ready) $("diag").textContent="Ready / 文件已就绪。新增货量按比例分配，DSP / Route 由 ZIP Mapping 匹配。";
+  else if(volumeData.length&&!zipMap.size) $("diag").textContent="Upload ZIP Mapping / 请上传 ZIP Mapping，系统将自动匹配 DSP 和 Route。";
+  else if(volumeData.length&&zipMap.size&&!stationSelected.size) $("diag").textContent="Select Station / 请选择一个或多个符合条件的站点，再生成预报。";
 }
-async function handleVolume(file){
-  if(!file||!/\.(xlsx|xls|csv)$/i.test(file.name)){alert("Please upload an Excel or CSV file.");return;}
+async function handleVolumeBase(file){
+  if(!file||!/\.(xlsx|xls|csv)$/i.test(file.name)){alert("Please upload Excel / CSV / 请上传 Excel 或 CSV 文件。");return;}
   try{
     const parsed=await readSpreadsheetSmart(file,"volume");
     volumeData=parsed.rows; volumeSchema=parsed.schema; volumeMeta=parsed.meta; discoveredStations=new Set(DEFAULT_STATIONS);
@@ -870,26 +711,26 @@ async function handleVolume(file){
     stationSelected=new Set();
     fineTuneByStation={};
     $("volUpload").classList.add("success");
-    const countMode=volumeSchema.count?`Volume: ${esc(volumeSchema.count)}`:"Volume: 1 row = 1 package";
-    const stationField=volumeSchema.station?`Station: <b>${esc(volumeSchema.station)}</b>`:volumeSchema.dsp?`Station inferred from DSP: <b>${esc(volumeSchema.dsp)}</b>`:volumeSchema.route?`Station inferred from Route: <b>${esc(volumeSchema.route)}</b>`:`Station: <b>from ZIP Mapping when unique</b>`;
-    $("volInfo").innerHTML=`✓ <b>${esc(file.name)}</b><br>${fmt(volumeData.length)} data rows · sheet: ${esc(volumeMeta.sheetName)} · header row ${volumeMeta.headerRow}<br>Matched → ZIP: <b>${esc(volumeSchema.zip)}</b> · ${stationField} · ${countMode}<br><span class="muted">DSP / Route are always completed from ZIP Mapping.</span>`;
+    const countMode=volumeSchema.count?`Volume column / 货量列：${esc(volumeSchema.count)}`:"Volume / 货量：每行对应1票";
+    const stationField=volumeSchema.station?`Station / 站点：<b>${esc(volumeSchema.station)}</b>`:volumeSchema.dsp?`Station from DSP / 从 DSP 推断站点：<b>${esc(volumeSchema.dsp)}</b>`:volumeSchema.route?`Station from Route / 从路区推断站点：<b>${esc(volumeSchema.route)}</b>`:`Station / 站点：<b>from ZIP Mapping when unique</b>`;
+    $("volInfo").innerHTML=`✓ <b>${esc(file.name)}</b><br>${fmt(volumeData.length)} data rows / 数据行 · Sheet / 工作表: ${esc(volumeMeta.sheetName)} · Header row / 表头行 ${volumeMeta.headerRow}<br>Matched fields / 识别到字段 → ZIP: <b>${esc(volumeSchema.zip)}</b> · ${stationField} · ${countMode}<br><span class="muted">DSP / Route are supplied by ZIP Mapping / DSP 与路区信息由映射表补齐。</span>`;
     rebuildDSPCache(); clearHistory(); renderStations(); renderStationInputs(); renderDSPControls(); invalidate();
-  }catch(e){alert("Could not read volume file: "+e.message)}
+  }catch(e){alert("Could not read Volume / 无法读取货量文件："+e.message)}
 }
-async function handleMap(file){
-  if(!file||!/\.(xlsx|xls|csv)$/i.test(file.name)){alert("Please upload an Excel or CSV file.");return;}
+async function handleMapBase(file){
+  if(!file||!/\.(xlsx|xls|csv)$/i.test(file.name)){alert("Please upload Excel / CSV / 请上传 Excel 或 CSV 文件。");return;}
   try{
     const parsed=await readSpreadsheetSmart(file,"mapping");
     mapData=parsed.rows; mapSchema=parsed.schema; mapMeta=parsed.meta; const report=buildZipMap();
-    if(!report.valid){ zipMap=new Map(); alert("Could not identify ZIP, DSP and Route columns in the mapping file."); }
+    if(!report.valid){ zipMap=new Map(); alert("Missing ZIP/DSP/Route columns / 映射表无法识别 ZIP、DSP、Route 字段。"); }
     $("mapUpload").classList.toggle("success",report.valid);
-    $("mapInfo").innerHTML=report.valid?`✓ <b>${esc(file.name)}</b><br>${fmt(report.rules)} rules · ${fmt(zipMap.size)} ZIPs · sheet: ${esc(mapMeta.sheetName)} · header row ${mapMeta.headerRow}<br>Matched → ZIP: <b>${esc(mapSchema.zip)}</b> · DSP: <b>${esc(mapSchema.dsp)}</b> · Route: <b>${esc(mapSchema.route)}</b>${mapSchema.station?` · Helper station: <b>${esc(mapSchema.station)}</b>`:""}<br><span class="muted">Station match priority: DSP prefix → Route prefix → helper station → unique ZIP fallback.</span>`:`Could not detect ZIP / DSP / Route`;
+    $("mapInfo").innerHTML=report.valid?`✓ <b>${esc(file.name)}</b><br>${fmt(report.rules)} rules / 条规则 · ${fmt(zipMap.size)} ZIPs / 个邮编 · Sheet / 工作表: ${esc(mapMeta.sheetName)} · Header row / 表头行 ${mapMeta.headerRow}<br>Matched fields / 识别到字段 → ZIP: <b>${esc(mapSchema.zip)}</b> · DSP: <b>${esc(mapSchema.dsp)}</b> · Route: <b>${esc(mapSchema.route)}</b>${mapSchema.station?` · Helper Station / 辅助站点: <b>${esc(mapSchema.station)}</b>`:""}<br><span class="muted">Station matching / 站点匹配优先级：DSP 前缀 → Route 前缀 → 辅助站点 → 唯一 ZIP。</span>`:`ZIP / DSP / Route columns not found / 无法识别邮编、配送商、路区列`;
     // Mapping may be needed to infer Station when a future Current Volume file only has ZIP.
     const counts=stationCounts(false); Object.keys(counts).forEach(st=>discoveredStations.add(st));
     const eligible=eligibleStations();
     stationSelected=new Set([...stationSelected].filter(st=>eligible.includes(st)));
     rebuildDSPCache(); clearHistory(); renderStations(); renderStationInputs(); renderDSPControls(); invalidate();
-  }catch(e){alert("Could not read mapping file: "+e.message)}
+  }catch(e){alert("Could not read Mapping / 无法读取映射表："+e.message)}
 }
 
 function allocateExact(leaves,targetTotal){
@@ -904,7 +745,7 @@ function allocateExact(leaves,targetTotal){
   rows.sort((a,b)=>a._i-b._i);
   return rows.map(({_i,_frac,...x})=>x);
 }
-function buildForecast(){
+function buildForecastLegacy(){
   const selected=new Set([...stationSelected].filter(st=>(stationCounts(false)[st]||0)>=STATION_DISPLAY_MIN));
   const stationLeaves={};
   const issueMap=new Map();
@@ -965,30 +806,30 @@ function buildForecast(){
   return {summary,detail,issues,stationMeta,current,added,forecast,considered,globalTotal:gTotal,globalAdd:gAdd,globalMultiplier:gm,forecastMode,historyDays:historyDays.length,fllFreight:fllSplit.meta,unmapped:issues.filter(x=>x.type!=="Duplicate mapping").reduce((sum,x)=>sum+x.rows,0)};
 }
 function driversNeeded(forecast){const cap=Math.max(1,Math.round(Number($("driverCap").value)||180));return Math.ceil(forecast/cap)}
-function renderResult(result){
+function renderResultLegacy(result){
   lastResult=result; $("copyBtn").disabled=false; $("exportBtn").disabled=false; $("imageBtn").disabled=false;
   $("kpiCurrent").textContent=fmt(result.current); $("kpiAdded").textContent=(result.added>=0?"+":"")+fmt(result.added); $("kpiForecast").textContent=fmt(result.forecast);
   $("kpiDSP").textContent=fmt(new Set(result.summary.map(x=>x.dsp)).size); $("kpiUnmapped").textContent=fmt(result.unmapped);
   $("kpiCurrentSub").textContent=`${stationSelected.size} station(s) ≥ ${fmt(STATION_DISPLAY_MIN)}`;
   renderDetail(); renderUnmapped();
   const conflict=mappingConflicts.length?` ${fmt(mappingConflicts.length)} conflicting duplicate ZIP mapping(s) also found.`:"";
-  $("diag").className="message "+(result.unmapped?"warn":"good"); $("diag").textContent=result.unmapped?`${fmt(result.unmapped)} selected volume row(s) were excluded due to ZIP/mapping issues.${conflict}`:`Forecast generated. All selected rows were mapped.${conflict}`;
+  $("diag").className="message "+(result.unmapped?"warn":"good"); $("diag").textContent=result.unmapped?`${fmt(result.unmapped)} selected rows excluded / 票因 ZIP 或 Mapping 不匹配被排除。${conflict}`:`Forecast generated / 预报已生成；已选数据全部匹配成功。${conflict}`;
   if(result.forecastMode!=="global"){
-    $("diag").textContent+=` Mode: ${result.forecastMode.toUpperCase()} · ${result.historyDays} historical file(s). Allocation remains within each selected station.`;
-    if(result.forecastMode==="dynamic"&&result.historyDays<2)$("diag").textContent+=" No historical data: using today's DSP mix (plus optional biases).";
+    $("diag").textContent+=` Mode / 模式: ${result.forecastMode.toUpperCase()} · ${result.historyDays} historical files / 历史文件。货量仅在所选站点内分配。`;
+    if(result.forecastMode==="dynamic"&&result.historyDays<2)$("diag").textContent+=" No history / 无历史文件：按当天 DSP 份额分配（可选手动微调）。";
   }
   const fll=result.fllFreight;
   if(fll?.applied){
-    $("diag").textContent+=` FLL ZIP-based estimated split: regular ${fmt(fll.normalForecast)} + freight ${fmt(fll.freightForecast)} (${fll.percent.toFixed(2)}%); same station total.`;
-    $("diag").textContent+=` Per-ZIP freight share from historical actuals; observed overall share ${(fll.actualPercent||0).toFixed(2)}% (intensity setting ${fll.percent.toFixed(2)}%). Daily overall share can differ because the ZIP mix changes.`;
-  }else if(fll?.actual){$("diag").textContent+=" Actual FLL F21–F26 mapping was detected; historical split not applied.";}
+    $("diag").textContent+=` FLL ZIP freight split / FLL 按 ZIP 估算货代拆分：普通配送 ${fmt(fll.normalForecast)} + 货代 ${fmt(fll.freightForecast)} (${fll.percent.toFixed(2)}%)；FLL站点总量保持不变。`;
+    $("diag").textContent+=` Historical ZIP-level split / 按历史 ZIP 拆分；实际货代总占比 ${(fll.actualPercent||0).toFixed(2)}%（货代调整参数 ${fll.percent.toFixed(2)}%）。每天 ZIP 占比不同，货代总占比也可能变化。`;
+  }else if(fll?.actual){$("diag").textContent+=" Actual FLL F21–F26 routes detected / 已识别当天真实 FLL F21–F26 路区，未使用历史拆分。";}
 
 }
 function filterText(s){const q=$("searchInput").value.trim().toLowerCase();return !q||String(s).toLowerCase().includes(q)}
 function renderSummary(){
   if(!lastResult)return; const body=$("summaryBody");body.innerHTML="";
   const rows=lastResult.summary.filter(x=>filterText(`${x.station} ${x.dsp}`));
-  if(!rows.length){body.innerHTML='<tr><td colspan="7"><div class="empty">No matching DSP rows.</div></td></tr>';return;}
+  if(!rows.length){body.innerHTML='<tr><td colspan="7"><div class="empty">No matching DSP rows / 无匹配配送商。</div></td></tr>';return;}
   for(const x of rows){const tr=document.createElement("tr"); tr.innerHTML=`<td><span class="pill">${esc(x.station)}</span></td><td class="dspCell">${esc(x.dsp)}</td><td class="num">${fmt(x.current)}</td><td class="num"><b>${fmt(x.forecast)}</b></td><td class="num ${x.increase>0?"positive":x.increase<0?"negative":""}">${x.increase>=0?"+":""}${fmt(x.increase)}</td><td class="num growth">${pct(x.growth)}</td><td class="num">${fmt(driversNeeded(x.forecast))}</td>`; body.appendChild(tr);}
 }
 function detailPlanningRows(applyFilter=true){
@@ -1006,15 +847,15 @@ function detailPlanningRows(applyFilter=true){
 function renderDetail(){
   if(!lastResult)return; const body=$("detailBody");body.innerHTML="";
   const rows=detailPlanningRows();
-  if(!rows.length){body.innerHTML='<tr><td colspan="5"><div class="empty">No matching detail rows.</div></td></tr>';return;}
+  if(!rows.length){body.innerHTML='<tr><td colspan="5"><div class="empty">No matching detail rows / 没有匹配的路区/邮编明细。</div></td></tr>';return;}
   for(const x of rows){
-    body.insertAdjacentHTML("beforeend",`<tr class="detailZIP"><td class="dspCell">${esc(x.dsp)}</td><td>${esc(x.route)}</td><td>${esc(x.zip)}</td><td class="num"><b>${fmt(x.forecast)}</b></td><td class="num"><b>${fmt(driversNeeded(x.forecast))}</b></td></tr>`);
+    body.insertAdjacentHTML("beforeend",`<tr class="detailZIP"><td class="dspCell">${esc(x.dsp)}</td><td>${esc(x.route)}</td><td>${esc(x.zip)}</td><td class="num"><b>${fmt(x.forecast)}</b></td><td class="num"></td></tr>`);
   }
 }
 function renderUnmapped(){
   if(!lastResult)return;const body=$("unmappedBody");body.innerHTML="";
   const rows=lastResult.issues.filter(x=>filterText(`${x.type} ${x.station} ${x.zip} ${x.details}`));
-  if(!rows.length){body.innerHTML='<tr><td colspan="5"><div class="empty">No mapping issues found.</div></td></tr>';return;}
+  if(!rows.length){body.innerHTML='<tr><td colspan="5"><div class="empty">No Mapping issues / 没有发现映射异常。</div></td></tr>';return;}
   for(const x of rows){body.insertAdjacentHTML("beforeend",`<tr><td><span class="pill ${x.type.includes("mapped")||x.type.includes("Missing")?"over":""}">${esc(x.type)}</span></td><td>${esc(x.station)}</td><td>${esc(x.zip)}</td><td>${esc(x.details)}</td><td class="num">${fmt(x.rows)}</td></tr>`)}
 }
 function detailPivotTSV(){
@@ -1071,7 +912,29 @@ function exportExcel(){
   const cap=Math.max(1,Math.round(Number($("driverCap").value)||180));
   const detailRows=detailPlanningRows(false);
   const detailAOA=[["DSP\nDSP","Route\nRuta","ZIP\nCódigo Postal","Forecast\nPronóstico","Recommended Drivers\nConductores Recomendados"]];
-  for(const x of detailRows) detailAOA.push([x.dsp,x.route,x.zip,x.forecast,Math.ceil(x.forecast/cap)]);
+  const byStation=new Map();
+  for(const x of detailRows){
+    if(!byStation.has(x.station))byStation.set(x.station,new Map());
+    const d=byStation.get(x.station);if(!d.has(x.dsp))d.set(x.dsp,new Map());
+    const routes=d.get(x.dsp);if(!routes.has(x.route))routes.set(x.route,[]);routes.get(x.route).push(x);
+  }
+  let cityTotal=0;
+  for(const [station,dsps] of byStation){
+    let stSum=0,stDrivers=0;
+    for(const [dsp,routes] of dsps){
+      detailAOA.push([]);
+      detailAOA.push(["DSP\nDSP","Route\nRuta","ZIP\nCódigo Postal","Forecast\nPronóstico","Recommended Drivers\nConductores Recomendados"]);
+      const dTotal=[...routes.values()].flat().reduce((s,x)=>s+x.forecast,0);
+      detailAOA.push([dsp,"","",dTotal,Math.ceil(dTotal/cap)]);stSum+=dTotal;stDrivers+=Math.ceil(dTotal/cap);
+      for(const [route,zips] of routes){
+        const rTotal=zips.reduce((s,x)=>s+x.forecast,0);
+        detailAOA.push(["",route,"",rTotal,Math.ceil(rTotal/cap)]);
+        for(const x of zips)detailAOA.push(["","",x.zip,x.forecast,""]);
+      }
+    }
+    detailAOA.push([]);detailAOA.push([station+" TOTAL","","",stSum,stDrivers]);cityTotal+=stSum;
+  }
+  if(byStation.size>1)detailAOA.push([],['ALL SELECTED TOTAL','','',cityTotal,'']);
   const issueAOA=[["Type\nTipo","Station\nEstación","ZIP\nCódigo Postal","Details\nDetalles","Rows\nFilas"]];
   if(lastResult.issues.length){ for(const x of lastResult.issues)issueAOA.push([x.type,x.station,x.zip,x.details,x.rows]); }
   else issueAOA.push(["No mapping issues / Sin problemas de mapeo","","","",""]);
@@ -1088,7 +951,14 @@ function exportExcel(){
   if(splitAOA.length>1)XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(splitAOA),"FLL Freight Split");
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(stationAOA),"Station Forecast");
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(issueAOA),"Unmapped");
-  XLSX.writeFile(wb,"PreAlarm_V3_8_Forecast.xlsx");
+  if(lastResult?.routeStats?.length){
+    const routes=[['Station / Estación','Route / Ruta','Current / Actual','Forecast / Pronóstico','Increase / Aumento']];
+    for(const x of lastResult.routeStats)routes.push([x.station,x.route,x.current,x.forecast,x.delta]);
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(routes),'Route Allocation');
+    const quality=[['Check / Verificación','Packages / Paquetes'],['Selected input',lastResult.reconcile.input],['Matched current',lastResult.reconcile.mapped],['Unresolved current',lastResult.reconcile.excluded],['Target forecast',lastResult.reconcile.target],['Final forecast',lastResult.forecast],['Direct routes',lastResult.evidence.direct],['Unique ZIP mapping',lastResult.evidence.unique],['Historical split estimate',lastResult.evidence.historical]];
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(quality),'Data Quality');
+  }
+  XLSX.writeFile(wb,`PreAlarm_V4_0_${$('forecastDate').value||'Forecast'}.xlsx`);
 }
 function buildDSPImageGroups(){
   const rows=detailPlanningRows(false), groups=new Map();
@@ -1141,7 +1011,7 @@ function drawDSPCanvas(group){
 }
 async function exportImages(){
   if(!lastResult)return;
-  const groups=buildDSPImageGroups();if(!groups.length){alert("No DSP data to export.");return;}
+  const groups=buildDSPImageGroups();if(!groups.length){alert("No DSP data to export / 没有可导出的 DSP 数据。");return;}
   const btn=$("imageBtn"),old=btn.textContent;btn.disabled=true;
   try{
     if(typeof JSZip==="undefined")throw new Error("Image ZIP library did not load. Please refresh the page and try again.");
@@ -1155,13 +1025,569 @@ async function exportImages(){
     btn.textContent="Packing ZIP…";
     const out=await zip.generateAsync({type:"blob",compression:"DEFLATE",compressionOptions:{level:6}});
     const a=document.createElement("a");a.href=URL.createObjectURL(out);a.download="PreAlarm_V3_8_DSP_Images.zip";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
-  }catch(e){alert("Could not export images: "+e.message);}
+  }catch(e){alert("Image export failed / 图片导出失败："+e.message);}
   finally{btn.textContent=old;btn.disabled=false;}
 }
+// V4.0 ROUTE-FIRST ENGINE / Independent of fixed column positions.
+const V4_STORE='preAlarmV4Settings';
+const V4_MAPPING='preAlarmV4Mapping';
+const V4_SNAPSHOT='preAlarmV4Snapshot';
+const V4_FORECASTS='preAlarmV4ForecastHistory';
+const V4_ACTUALS='preAlarmV4ActualHistory';
+const V4_MANUAL_VERSION='4.0';
+const routeOwnerRules={};  // station\u0001route -> {dsp:percent}
+const routeTweaks={};      // station\u0001route -> {delta, locked}
+let recentActual=null, calibrationDays=[], useQuickBaseline=false, imageURLCache=[], lastWarnings=[], lastActualFile='';
+function routeCode(raw){
+  const s=String(raw??'').trim().toUpperCase().replace(/[-_\s]+$/,''); if(!s)return '';
+  const m=s.match(/(?:^|[-_\s])([FMN]\d{1,3})$/);
+  if(m)return m[1];
+  return s;
+}
+function mappingForZip(st,zip){
+ const arr=zipMap.get(zip)||[];
+ return arr.filter(x=>(x.station||stationFromDSP(x.dsp)||stationFromRoute(x.route))===st);
+}
+function getRouteOwner(st,route,fallback){
+ const r=routeCode(route),key=st+'\u0001'+r, v=routeOwnerRules[key];
+ if(v && Object.keys(v).length)return v;
+ if(st==='MIA'){
+  if(r==='F7'||r==='F8'||/^M(?:2[4-9]|3[0-2])$/.test(r))return {'MIA-PFC':100};
+  if(['F3','F4','F5','F6','F9','F10','F11','F12','F13','F14','F15'].includes(r))return {'MIA-PFF':100};
+ }
+ if(st==='FLL'){
+  const f=FLL_FREIGHT_ROUTES.find(x=>x.route===r);
+  if(f)return {[f.dsp]:100};
+ }
+ const dsp=String(fallback||'').trim();
+ return dsp?{[dsp]:100}:null;
+}
+function mappingRuleForRoute(st,zip,rt){
+ const all=mappingForZip(st,zip);
+ const found=all.find(x=>routeCode(x.route)===routeCode(rt));
+ return found||null;
+}
+function safeGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function safePut(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){console.warn('Storage not available',e);return false}}
+function safeJSON(s,def){try{return s?JSON.parse(s):def}catch{return def}}
+function cleanZipStrict(s){
+ const t=String(s??'').trim().replace(/^'/,'');
+ return /^\d{5}(?:-\d{4})?$/.test(t)?t.slice(0,5):null;
+}
+function v4TrackingHeader(keys){return keys.find(k=>/运单|tracking|waybill|parcelno|packageid|trackingnumber/i.test(String(k)))||null}
+function v4SummedActual(rows,schema){
+ const out=new Map(), zips=new Map(),seen=new Set();let total=0,duplicates=0,missing=0,realZip=0;
+ const fields=Object.keys(rows[0]||{}),trackKey=v4TrackingHeader(fields);
+ for(const row of rows){
+  const t=trackKey?String(row[trackKey]??'').trim():'';
+  if(t){if(seen.has(t)){duplicates++;continue}seen.add(t)}
+  const st=getStation(row,true,schema),r=routeCode(schema.route?row[schema.route]:''),ds=String(schema.dsp?row[schema.dsp]:'').trim();
+  if(!st||!r){missing++;continue}
+  const n=schema.count?Math.max(0,Math.round(getVolumeWeight(row,schema))):1;
+  if(!n)continue;
+  const owner=getRouteOwner(st,r,null),known=owner&&Object.keys(owner).length===1?Object.keys(owner)[0]:null;
+  const dsp=known||ds||'UNKNOWN';
+  const key=st+'\u0001'+r; const prior=out.get(key)||{station:st,route:r,dsp,current:0};prior.current+=n;out.set(key,prior);total+=n;
+  // A comma-separated ZIP coverage list is not a parcel destination ZIP.
+  const z=$('actualZipIsParcel').checked&&schema.zip?cleanZipStrict(row[schema.zip]):null;
+  if(z){const zk=st+'\u0001'+z+'\u0001'+r;zips.set(zk,(zips.get(zk)||0)+n);realZip+=n}
+ }
+ return {routes:[...out.values()],zipRoutes:[...zips].map(([k,current])=>{const [station,zip,route]=k.split('\u0001');return {station,zip,route,current}}),total,duplicates,missing,realZip};
+}
+function v4LearnedRouteMix(st){
+ if(!calibrationDays.length)return new Map();
+ const sums=new Map();
+ for(const day of calibrationDays){
+  const scoped=day.routes.filter(x=>x.station===st);const total=scoped.reduce((a,x)=>a+x.current,0);
+  if(!total)continue;
+  for(const x of scoped){const key=x.route;sums.set(key,(sums.get(key)||0)+x.current/total);}
+ }
+ return sums;
+}
+function v4LearnedZipMix(st,zip){
+ const out=new Map();let days=0;
+ for(const day of calibrationDays){
+  const a=day.zipRoutes.filter(x=>x.station===st&&x.zip===zip);
+  const total=a.reduce((sum,x)=>sum+x.current,0);
+  if(total<20)continue;
+  days++;
+  for(const x of a)out.set(x.route,(out.get(x.route)||0)+x.current/total);
+ }
+ return days?out:null;
+}
+function v4MiaProfile(){
+ const a=MIA_PFC_PFF_PROFILE.map(x=>({...x,route:routeCode(x.route)}));
+ // F7/F8 are PFC. Coverage ZIPs are based on route coverage in 10/22 and 11/05 actual reports.
+ // These are *route coverage* ZIPs, not individual parcel ZIP evidence.
+ a.push({dsp:'MIA-PFC',route:'F7',weight:1179,zips:['33166','33195']});
+ a.push({dsp:'MIA-PFC',route:'F8',weight:1010,zips:['33166','33178']});
+ const learned=v4LearnedRouteMix('MIA');
+ if(learned.size){for(const r of a){if(learned.has(r.route))r.weight=learned.get(r.route);}}
+ return a;
+}
+function v4Candidates(st,zip){
+ const mapRules=mappingForZip(st,zip), learned=v4LearnedZipMix(st,zip);
+ // Historical full-package-ZIP evidence takes precedence over route coverage lists.
+ if(learned?.size){
+   const weighted=[...learned].filter(([,v])=>v>0).map(([route,weight])=>({route,weight,dsp:mappingRuleForRoute(st,zip,route)?.dsp||getRouteOwner(st,route,null)&&Object.keys(getRouteOwner(st,route,null))[0],source:'historical ZIP'}));
+   if(weighted.every(x=>x.dsp))return weighted;
+ }
+ // MIA-PFC in the regular volume is often a combined PFC+PFF pool.
+ const miaPool=st==='MIA'&&mapRules.length>0&&mapRules.every(x=>isMiaPfcPffDSP(x.dsp));
+ if(miaPool){
+  const candidates=v4MiaProfile().filter(x=>x.zips.includes(zip));
+  if(candidates.length)return candidates.map(x=>({route:x.route,dsp:x.dsp,weight:x.weight,source:'historical freight route'}));
+  // Don't fabricate unlisted postal codes/routes.
+  return [];
+ }
+ const uniqueMap=new Map(mapRules.map(x=>[routeCode(x.route)+'\u0001'+x.dsp,{route:routeCode(x.route),dsp:x.dsp,weight:1,source:'unique mapping'}]));
+ const mapped=[...uniqueMap.values()];
+ if(st==='FLL' && $('fllFreightEnabled').checked){
+  const ref=FLL_FREIGHT_ZIP_REFERENCE[zip],factor=Math.max(0,Number($('fllFreightPercent').value)||0)/FLL_FREIGHT_DEFAULT_PERCENT;
+  const regular=mapped.filter(x=>!isFllFreightRoute(x.route));
+  if(ref && ref.total>0 && regular.length===1){
+   const freightEntries=Object.entries(ref.routes).filter(([r,w])=>w>0&&FLL_FREIGHT_ROUTES.some(z=>z.route===r));
+   if(freightEntries.length){
+    const freightWeight=freightEntries.reduce((s,[,w])=>s+w,0);
+    const fFraction=Math.min(1,Math.max(0,(freightWeight/ref.total)*factor));
+    if(fFraction>0){
+     const rows=[{...regular[0],weight:1-fFraction,source:'historical ZIP'}];
+     for(const [r,w] of freightEntries){const o=FLL_FREIGHT_ROUTES.find(x=>x.route===r);rows.push({route:r,dsp:o.dsp,weight:fFraction*w/freightWeight,source:'historical ZIP'});}
+     return rows.filter(x=>x.weight>0);
+    }
+   }
+  }
+ }
+ if(mapped.length===1)return mapped;
+ // Never arbitrarily choose one of several routes serving the same ZIP.
+ return mapped.length>1?null:[];
+}
+// Historical DSP trend counts use the same route/ZIP routing rules as the forecast.
+function countDSPsForInput(rows,schema){
+ const byStation={};let total=0,mapped=0,unmapped=0;
+ for(const row of rows){
+  const n=Math.max(0,Math.round(getVolumeWeight(row,schema)));if(!n)continue;
+  total+=n;const st=getStation(row,true,schema),zip=getZip(row,schema);
+  if(!st||!zip){unmapped+=n;continue}
+  const direct=schema.route?routeCode(row[schema.route]):'';
+  let candidates=[];
+  if(direct){
+   const dsp=Object.keys(getRouteOwner(st,direct,schema.dsp?row[schema.dsp]:mappingRuleForRoute(st,zip,direct)?.dsp)||{})[0];
+   if(dsp)candidates=[{route:direct,dsp,weight:1}];
+  }else candidates=v4Candidates(st,zip);
+  if(!candidates?.length){unmapped+=n;continue}
+  const parts=allocateWeightedTotal(n,candidates,c=>c.weight);
+  byStation[st] ||= {};
+  for(const p of parts){const dsp=Object.keys(getRouteOwner(st,p.item.route,p.item.dsp)||{})[0]||p.item.dsp;
+    if(dsp)byStation[st][dsp]=(byStation[st][dsp]||0)+p.value; else unmapped+=p.value;
+  }
+  mapped+=n;
+ }
+ return {byStation,total,mapped,unmapped};
+}
+function v4RawVolumeGroups(selected,issueAdd){
+ const grouped=new Map();let total=0,duplicates=0;
+ const tKey=v4TrackingHeader(Object.keys(volumeData[0]||{})),seen=new Set();
+ for(const row of volumeData){
+  const st=getStation(row);if(!st||!selected.has(st))continue;
+  const rawWeight=getVolumeWeight(row);if(rawWeight<=0)continue;
+  if(tKey&&!volumeSchema.count){const t=String(row[tKey]??'').trim();if(t){if(seen.has(st+'\u0001'+t)){duplicates++;continue;}seen.add(st+'\u0001'+t)}}
+  const weight=Math.max(0,Math.round(rawWeight));total+=weight;
+  const zip=getZip(row),route=volumeSchema.route?routeCode(row[volumeSchema.route]):'',dsp=volumeSchema.dsp?String(row[volumeSchema.dsp]??'').trim():'';
+  if(!zip){issueAdd('Missing ZIP',st,'','No valid destination ZIP',weight);continue}
+  const key=[st,zip,route,dsp].join('\u0001');const a=grouped.get(key)||{station:st,zip,route,dsp,current:0};a.current+=weight;grouped.set(key,a);
+ }
+ return {groups:[...grouped.values()],total,duplicates};
+}
+function v4AllocateInput(groups,issueAdd){
+ const out=[];const evidence={direct:0,unique:0,historical:0};
+ for(const r of groups){
+  if(r.route){
+   const found=mappingRuleForRoute(r.station,r.zip,r.route),rawDSP=r.dsp||found?.dsp||Object.keys(getRouteOwner(r.station,r.route,null)||{})[0];
+   if(!rawDSP){issueAdd('Route has no DSP',r.station,r.zip,`Route ${r.route} is not mapped. Add a Route Assignment.`,r.current);continue}
+   out.push({...r,dsp:rawDSP,source:'direct'});evidence.direct+=r.current;continue;
+  }
+  const candidates=v4Candidates(r.station,r.zip);
+  if(candidates===null){issueAdd('Ambiguous ZIP mapping',r.station,r.zip,'More than one Route/DSP; no verified ZIP split. Upload actual routing or set a rule.',r.current);continue}
+  if(!candidates.length){issueAdd('ZIP not mapped',r.station,r.zip,'No valid Route for this station/ZIP',r.current);continue}
+  const allocated=allocateWeightedTotal(r.current,candidates,x=>x.weight);
+  for(const a of allocated){if(!a.value)continue;
+   const info=a.item,source=(info.source||'').startsWith('historical')?'historical':'unique';
+   out.push({station:r.station,zip:r.zip,route:info.route,dsp:info.dsp,current:a.value,source});
+   evidence[source]+=a.value;
+  }
+ }
+ return {rows:out,evidence};
+}
+function v4AllocateStationRoutes(st,leaves,target){
+ const routeMap=new Map();
+ for(const x of leaves){const k=routeCode(x.route);const a=routeMap.get(k)||{station:st,route:k,current:0,items:[]};a.current+=x.current;a.items.push(x);routeMap.set(k,a)}
+ const routeGroups=[...routeMap.values()].filter(x=>x.current>0).sort((a,b)=>a.route.localeCompare(b.route));
+ if(!routeGroups.length)return {rows:[],routeStats:[]};
+ const sumCurrent=routeGroups.reduce((s,x)=>s+x.current,0);
+ const getTrend=(r)=>{
+   const top=r.items.sort((a,b)=>b.current-a.current)[0],dsp=top?.dsp||'';
+   return (forecastMode==='dynamic'?momentumForDSP(st,dsp):1)*(forecastMode==='manual'?1+getDSPBias(st,dsp)/100:1);
+ };
+ const weight=(r)=>Math.max(0,r.current*getTrend(r));
+ const tweaks=routeGroups.map(r=>({r,t:routeTweaks[st+'\u0001'+r.route]||{delta:0,locked:false}}));
+ const fixed=tweaks.filter(x=>x.t.locked||x.t.delta!==0),free=tweaks.filter(x=>!(x.t.locked||x.t.delta!==0));
+ const proposed=new Map(),defaultTargets=new Map();
+ for(const p of allocateWeightedTotal(target,routeGroups,weight))defaultTargets.set(p.item.route,p.value);
+ for(const item of fixed){const base=defaultTargets.get(item.r.route)||0;proposed.set(item.r.route,Math.max(0,base+Math.round(item.t.delta||0)));}
+ const fixedTotal=[...proposed.values()].reduce((a,b)=>a+b,0),remaining=target-fixedTotal;
+ if(remaining<0)throw new Error(`${st}: fixed route targets exceed the station Forecast by ${fmt(-remaining)} packages. Reduce route adjustments.`);
+ if(!free.length&&remaining!==0)throw new Error(`${st}: all routes are locked but ${fmt(remaining)} packages remain. Unlock one route.`);
+ for(const p of allocateWeightedTotal(remaining,free,x=>weight(x.r)))proposed.set(p.item.r.route,p.value);
+ const routeStats=[],rows=[];
+ for(const group of routeGroups){
+  const tgt=proposed.get(group.route)||0;
+  routeStats.push({station:st,route:group.route,current:group.current,forecast:tgt,delta:tgt-group.current});
+  for(const item of allocateExact(group.items,tgt)) rows.push(item);
+ }
+ return {rows,routeStats};
+}
+function v4ApplyDSPAssignments(rows){
+ const out=[];
+ for(const row of rows){
+  const shares=getRouteOwner(row.station,row.route,row.dsp);
+  if(!shares)throw new Error(`Missing DSP owner: ${row.station} / ${row.route}`);
+  const items=Object.entries(shares).map(([dsp,percent])=>({dsp,percent}));
+  const cur=allocateWeightedTotal(row.current,items,x=>x.percent),fc=allocateWeightedTotal(row.forecast,items,x=>x.percent);
+  for(let i=0;i<items.length;i++){
+   const current=cur[i].value,forecast=fc[i].value;if(!current&&!forecast)continue;
+   out.push({station:row.station,route:row.route,zip:row.zip,dsp:items[i].dsp,current,forecast,source:row.source});
+  }
+ }
+ // Merge duplicate zip-route-DSP cells without spreading an allocation between stations.
+ const m=new Map();for(const x of out){const k=[x.station,x.dsp,x.route,x.zip].join('\u0001');const v=m.get(k)||{...x,current:0,forecast:0};v.current+=x.current;v.forecast+=x.forecast;if(v.source!==x.source)v.source='mixed';m.set(k,v)}
+ return [...m.values()];
+}
+function buildForecast(){
+ const available=stationCounts(false),selected=new Set([...stationSelected].filter(s=>(available[s]||0)>=STATION_DISPLAY_MIN));
+ const issueMap=new Map();
+ const issueAdd=(type,station,zip,details,weight=1)=>{const key=[type,station,zip,details].join('|');const a=issueMap.get(key)||{type,station:station||'—',zip:zip||'—',details,rows:0};a.rows+=weight;issueMap.set(key,a)};
+ const raw=v4RawVolumeGroups(selected,issueAdd),a=v4AllocateInput(raw.groups,issueAdd);
+ if(raw.duplicates)issueAdd('Duplicate tracking rows','—','—','Duplicate tracking number rows skipped',0);
+ for(const c of mappingConflicts){issueAdd('Duplicate mapping',c.prior.station,c.zip,`Alternative rules: ${c.prior.dsp}/${c.prior.route} and ${c.next.dsp}/${c.next.route}`,0)}
+ const stationLeaves=new Map();for(const x of a.rows){if(!stationLeaves.has(x.station))stationLeaves.set(x.station,[]);stationLeaves.get(x.station).push(x)}
+ const preAssigned=[];const stationMeta={},routeStats=[];let matchedCurrent=0;
+ for(const st of [...selected]){
+  const leaves=stationLeaves.get(st)||[],current=leaves.reduce((sum,x)=>sum+x.current,0);
+  matchedCurrent+=current;
+  const autoTarget=Math.round(current*globalMultiplier()),tune=Math.round(Number(fineTuneByStation[st])||0),target=Math.max(0,autoTarget+tune);
+  const allocated=v4AllocateStationRoutes(st,leaves,target);
+  preAssigned.push(...allocated.rows);routeStats.push(...allocated.routeStats);
+  stationMeta[st]={current,autoAdd:autoTarget-current,tune,add:target-current,target,globalMultiplier:globalMultiplier()};
+ }
+ const detail=v4ApplyDSPAssignments(preAssigned).sort((a,b)=>a.station.localeCompare(b.station)||a.dsp.localeCompare(b.dsp)||a.route.localeCompare(b.route)||a.zip.localeCompare(b.zip));
+ const summaryMap=new Map();for(const x of detail){const k=x.station+'\u0001'+x.dsp;const v=summaryMap.get(k)||{station:x.station,dsp:x.dsp,current:0,forecast:0};v.current+=x.current;v.forecast+=x.forecast;summaryMap.set(k,v)}
+ const summary=[...summaryMap.values()].map(x=>({...x,increase:x.forecast-x.current,growth:x.current?(x.forecast-x.current)/x.current:0}));
+ const issueRows=[...issueMap.values()].sort((a,b)=>b.rows-a.rows),unmapped=issueRows.filter(x=>!['Duplicate mapping','Duplicate tracking rows'].includes(x.type)).reduce((a,x)=>a+x.rows,0);
+ const forecast=detail.reduce((sum,x)=>sum+x.forecast,0),current=Object.values(stationMeta).reduce((sum,x)=>sum+x.current,0);
+ const target=Object.values(stationMeta).reduce((sum,x)=>sum+x.target,0),mapped=detail.reduce((sum,x)=>sum+x.current,0);
+ const fllFreightForecast=detail.filter(x=>x.station==='FLL'&&isFllFreightRoute(x.route)).reduce((sum,x)=>sum+x.forecast,0);
+ const fllTotal=detail.filter(x=>x.station==='FLL').reduce((s,x)=>s+x.forecast,0);
+ const fllFreightCurrent=detail.filter(x=>x.station==='FLL'&&isFllFreightRoute(x.route)).reduce((sum,x)=>sum+x.current,0);
+ const plannedAdd=target-current;
+ if(forecast!==target||mapped!==current||raw.total!==matchedCurrent+unmapped)throw new Error(`Forecast reconciliation failed: ${raw.total} input, ${matchedCurrent} matched, ${unmapped} unmatched, ${forecast} forecast vs ${target} target`);
+ const result={detail,summary,issues:issueRows,stationMeta,current,added:plannedAdd,forecast,considered:raw.total,globalTotal:globalTotalVolume(),globalAdd:globalAddPackages(),globalMultiplier:globalMultiplier(),forecastMode,historyDays:historyDays.length,
+    unmapped,reconcile:{input:raw.total,mapped:current,excluded:unmapped,target,duplicateTracking:raw.duplicates},routeStats,evidence:a.evidence,quick:useQuickBaseline,
+    fllFreight:{applied:fllFreightForecast>0,actual:a.rows.some(x=>x.station==='FLL'&&x.source==='direct'&&isFllFreightRoute(x.route)),percent:Number($('fllFreightPercent').value)||0,freightForecast:fllFreightForecast,normalForecast:fllTotal-fllFreightForecast,freightCurrent:fllFreightCurrent,normalCurrent:current-fllFreightCurrent,actualPercent:fllTotal?fllFreightForecast*100/fllTotal:0}};
+ return result;
+}
+// Configuration: no private shipment records are stored. Settings and aggregate routing only.
+function v4SaveSettings(includeMapping=false){
+ const obj={version:V4_MANUAL_VERSION,globalAddUnits,forecastMode,dspAdjustment,routeOwnerRules,routeTweaks,
+    driverCap:$('driverCap').value,forecastDate:$('forecastDate').value,
+    fllFreightEnabled:$('fllFreightEnabled').checked,fllFreightPercent:$('fllFreightPercent').value,
+    calibrationDays:calibrationDays.slice(-14)};
+ const ok=safePut(V4_STORE,obj);
+ if(includeMapping&&mapData.length&&mapSchema.zip){
+   const compact=mapData.map(x=>[x[mapSchema.zip],x[mapSchema.dsp],x[mapSchema.route],mapSchema.station?x[mapSchema.station]:''])
+     .filter(x=>cleanZip(x[0])&&x[1]&&x[2]);
+   const mapOK=safePut(V4_MAPPING,compact);
+   $('mapSavedStatus').textContent=mapOK?'✓ Mapping cached / 邮编映射已保存在此设备。':'⚠ Mapping too large / 映射表过大，无法缓存在浏览器；请导出设置或下次重新上传。';
+ }
+ return ok;
+}
+function v4RestoreSettings(){
+ const o=safeJSON(safeGet(V4_STORE),null);if(o){
+  Object.assign(routeOwnerRules,o.routeOwnerRules||{});Object.assign(routeTweaks,o.routeTweaks||{});Object.assign(dspAdjustment,o.dspAdjustment||{});
+  calibrationDays=(o.calibrationDays||[]).filter(x=>x?.routes&&x?.zipRoutes).slice(-14);
+  globalAddUnits=Number(o.globalAddUnits??1);forecastMode=o.forecastMode||'route';if(!['route','global','dynamic','manual'].includes(forecastMode))forecastMode='route';
+  $('globalAddVol').value=globalAddUnits;$('driverCap').value=o.driverCap||180;$('fllFreightPercent').value=o.fllFreightPercent||'17.28';$('fllFreightEnabled').checked=o.fllFreightEnabled!==false;
+  if(o.forecastDate)$('forecastDate').value=o.forecastDate;
+ }
+ const saved=safeJSON(safeGet(V4_MAPPING),null);
+ if(Array.isArray(saved)&&saved.length){
+  mapSchema={zip:'ZIP',dsp:'DSP',route:'Route',station:'Station'};
+  mapData=saved.map(r=>({ZIP:r[0],DSP:r[1],Route:r[2],Station:r[3]}));
+  buildZipMap();
+  $('mapInfo').innerHTML=`✓ Saved ZIP Mapping · ${fmt(mapData.length)} rules / 条规则 · loaded from this device`;
+  $('mapSavedStatus').textContent='Mapping cached / 映射表已在本机缓存。路区归属变更时可以上传最新版。';
+  $('mapUpload').classList.add('success');
+ }
+ const snap=safeJSON(safeGet(V4_SNAPSHOT),null);
+ if(snap?.rows?.length){$('quickStatus').textContent=`Saved Baseline / 已保存基准：${fmt(snap.rows.reduce((s,x)=>s+x[4],0))} 票，${snap.date||'日期未知'}；可使用快速预报。`;}
+ v4RenderAssignments();renderStations();renderStationInputs();renderDSPControls();updateReady();
+}
+function v4ExportSettings(){
+ v4SaveSettings(false);const o=safeJSON(safeGet(V4_STORE),{});
+ const mapping=safeJSON(safeGet(V4_MAPPING),null);
+ const blob=new Blob([JSON.stringify({...o,mapping},null,2)],{type:'application/json'});
+ v4DownloadBlob(blob,`PreAlarm_Settings_${$('forecastDate').value||'backup'}.json`);
+}
+async function v4ImportSettings(file){
+ try{
+  const json=JSON.parse(await file.text());if(!json || !json.version)throw new Error('Not a valid Pre Alarm settings file / 不是有效的 Pre Alarm 设置文件');
+  const mapping=json.mapping;if(mapping&&(!Array.isArray(mapping)||mapping.length>100000))throw new Error('Invalid mapping backup / 映射表备份无效');
+  if(!safePut(V4_STORE,{...json,mapping:undefined}))throw new Error('Browser storage is disabled / 浏览器存储不可用');
+  if(mapping)safePut(V4_MAPPING,mapping);
+  location.reload();
+ }catch(e){alert('Settings import failed / 设置导入失败：'+e.message)}
+}
+function v4DownloadBlob(blob,name){
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);
+}
+function v4ParseShares(st,text){
+ const out={},pairs=text.split(/[,;\n]+/).map(s=>s.trim()).filter(Boolean);
+ if(!pairs.length)throw new Error('Enter DSP:percent / 请输入 DSP:百分比 规则');
+ for(const p of pairs){const i=p.lastIndexOf(':');if(i<1)throw new Error('Use DSP:percent with commas / 使用 DSP:百分比 格式，多个以逗号分隔');
+  const dsp=p.slice(0,i).trim().toUpperCase(),n=Number(p.slice(i+1));
+  if(!dsp||!Number.isFinite(n)||n<0||n>100)throw new Error('Invalid percentage / 比例无效：'+dsp);
+  if(!dsp.startsWith(st+'-'))throw new Error('DSP must start with station prefix / DSP 必须使用站点前缀 '+st+'- (e.g. '+st+'-GOD)');
+  if(out[dsp])throw new Error('Duplicate DSP / 重复 DSP：'+dsp);
+  out[dsp]=n;
+ }
+ const sum=Object.values(out).reduce((a,b)=>a+b,0);if(Math.abs(sum-100)>0.001)throw new Error(`Shares must total 100% / 各 DSP 比例合计必须100%，当前为 ${sum.toFixed(2)}%`);
+ return out;
+}
+function v4RenderAssignments(){
+ const el=$('assignmentList');el.innerHTML='';
+ const keys=Object.keys(routeOwnerRules).sort();
+ if(!keys.length){el.innerHTML='<div class="fileMeta">No custom assignments / 暂无自定义归属。默认 F7/F8 → PFC，FLL F21–F26 按货代默认 DSP。</div>';return}
+ for(const key of keys){const [st,route]=key.split('\u0001'),o=routeOwnerRules[key];
+  const row=document.createElement('div');row.className='settingsRow';
+  row.innerHTML=`<div><b>${esc(st)} · ${esc(route)}</b><br><small>${esc(Object.entries(o).map(([d,n])=>d+' '+n+'%').join(' / '))}</small></div><div><button class="btn sm">Edit / 编辑</button><button class="delete">×</button></div>`;
+  row.querySelector('.btn').onclick=()=>{$('assignStation').value=st;$('assignRoute').value=route;$('assignShares').value=Object.entries(o).map(([d,n])=>d+':'+n).join(', ');$('assignShares').focus()};
+  row.querySelector('.delete').onclick=()=>{delete routeOwnerRules[key];v4SaveSettings();v4RenderAssignments();invalidate()};el.appendChild(row)
+ }
+}
+function v4SaveRouteAssignment(){
+ try{
+  const st=canonicalStation($('assignStation').value),route=routeCode($('assignRoute').value);
+  if(!st||!route)throw new Error('Enter Station and Route / 请输入站点和路区');
+  const shares=v4ParseShares(st,$('assignShares').value);
+  routeOwnerRules[st+'\u0001'+route]=shares;
+  v4SaveSettings();v4RenderAssignments();invalidate();
+  $('diag').textContent=`Saved / 规则已保存 ${st} / ${route}。请重新生成预报生效。`;
+ }catch(e){alert('Assignment not saved / 归属规则保存失败：'+e.message)}
+}
+function v4RenderRouteTweaks(){
+ const box=$('routeTuneList');box.innerHTML='';
+ if(!lastResult?.routeStats?.length){box.innerHTML='<div class="fileMeta">Generate Forecast first / 请先生成预报以查看路区目标。</div>';return}
+ for(const item of lastResult.routeStats){
+  const key=item.station+'\u0001'+item.route,t=routeTweaks[key]||{delta:0,locked:false};
+  const r=document.createElement('div');r.className='dspRow';r.style.gridTemplateColumns='minmax(88px,1fr) 65px 70px 45px';
+  r.innerHTML=`<div><b>${esc(item.station)} ${esc(item.route)}</b><small>Current ${fmt(item.current)} · ${(100*item.current/(lastResult.stationMeta[item.station]?.current||1)).toFixed(1)}%</small></div><div style="text-align:right"><small>Forecast / 预报</small>${fmt(item.forecast)}</div><input type="number" aria-label="${esc(item.route)} delta packages" step="10" value="${t.delta||0}" title="Adjustment in packages / 按票数微调"><label style="font-size:10px;text-align:center"><input type="checkbox" ${t.locked?'checked':''}> Lock / 锁定</label>`;
+  const input=r.querySelector('input[type=number]'),lock=r.querySelector('input[type=checkbox]');
+  const changed=()=>{routeTweaks[key]={delta:Math.round(Number(input.value)||0),locked:lock.checked};v4SaveSettings();invalidate();$('diag').textContent='Route changed / 路区目标已调整，请再次点击 Generate Forecast。'};
+  input.onchange=changed;lock.onchange=changed;box.appendChild(r)
+ }
+}
+function v4SavedForecasts(){return safeJSON(safeGet(V4_FORECASTS),[])}
+function v4SaveForecastRecord(result){
+ const date=$('forecastDate').value||new Date().toLocaleDateString('en-CA');
+ const groups=new Map();for(const x of result.detail){const k=x.station+'\u0001'+x.dsp+'\u0001'+x.route;groups.set(k,(groups.get(k)||0)+x.forecast)}
+ const obj={date,createdAt:new Date().toISOString(),rows:[...groups].map(([k,forecast])=>[...k.split('\u0001'),forecast]),target:result.forecast};
+ const arr=v4SavedForecasts().filter(x=>x.date!==date);arr.push(obj);arr.sort((a,b)=>a.date.localeCompare(b.date));
+ safePut(V4_FORECASTS,arr.slice(-30));v4RenderForecastOptions(date);
+}
+function v4RenderForecastOptions(selected){
+ const el=$('accuracyForecastSelect');if(!el)return;
+ const previous=selected??el.value,arr=v4SavedForecasts();
+ el.innerHTML='<option value="current">Current Generated Forecast / 当前生成的预报</option>';
+ for(const h of arr.slice().reverse()){const opt=document.createElement('option');opt.value=h.date;opt.textContent=h.date+' · Saved / 已保存 '+fmt(h.target)+' 票';el.appendChild(opt)}
+ if(previous==='current'||arr.some(x=>x.date===previous))el.value=previous;
+}
+function v4ConfidenceHTML(result){
+ const e=result.evidence,total=result.reconcile.input,matched=result.reconcile.mapped,matchRate=total?matched*100/total:0;
+ const forecastOk=result.forecast===result.reconcile.target,sourceDen=e.direct+e.unique+e.historical;
+ const daily=sourceDen?100*e.direct/sourceDen:0;
+ $('reconciliation').innerHTML=`<div class="statusCard"><small>Input Matched / 输入匹配率</small><b>${matchRate.toFixed(1)}%</b><div class="progress"><i style="width:${matchRate.toFixed(1)}%"></i></div><small>${fmt(matched)} / ${fmt(total)} parcels / 票</small></div><div class="statusCard"><small>Forecast Balance / 预报总量对账</small><b style="color:${forecastOk?'#16846f':'#bc4552'}">${forecastOk?'0':'ERROR'}</b><small>${fmt(result.forecast)} / Target / 目标 ${fmt(result.reconcile.target)}</small></div><div class="statusCard"><small>Direct Route Evidence / 当天路区数据占比</small><b>${daily.toFixed(1)}%</b><div class="progress"><i style="width:${daily.toFixed(1)}%;background:#338dc9"></i></div><small>${fmt(e.direct)} 当天真实路区 · ${fmt(e.unique)} 映射推断 · ${fmt(e.historical)} 历史比例估算</small></div>`;
+ const totalActive=Object.values(stationCounts(false)).filter(x=>x>=STATION_DISPLAY_MIN).reduce((a,b)=>a+b,0);
+ const selectedRaw=result.reconcile.input,globalAdd=globalAddPackages(),unselected=Math.max(0,globalTotalVolume()-selectedRaw);
+ const msgs=[];
+ if(result.reconcile.excluded)msgs.push(`⚠ ${fmt(result.reconcile.excluded)} unresolved parcels / 票未匹配成功；没有强制分配给任何 DSP。`);
+ if(e.historical)msgs.push(`${fmt(e.historical)} packages / 票使用历史 ZIP/Route 比例估算，并非当天真实路区货量。`);
+ if(result.quick)msgs.push('Quick Forecast / 快速预报：使用历史基准，不是当天真实货量。');
+ if(unselected)msgs.push(`${fmt(unselected)} packages outside selected stations / 票位于未选站点；保持原全网增长倍率，不将其新增量重复分给已选站点。`);
+ msgs.push(`Total Check / 总量核对：Input / 输入 ${fmt(selectedRaw)} = Mapped / 已匹配 ${fmt(matched)} + Unresolved / 未匹配 ${fmt(result.reconcile.excluded)}；Forecast / 预报 ${fmt(result.forecast)} = Target / 目标 ${fmt(result.reconcile.target)}。`);
+ $('routeWarnings').innerHTML=msgs.map(s=>`<div>${esc(s)}</div>`).join('');$('routeWarnings').className='message '+(result.reconcile.excluded?'warn':'good');
+}
+function v4StoreSnapshot(result){
+ // Source is a normalized Route/ZIP aggregate, no tracking number or customer details.
+ const agg=new Map();for(const x of result.detail){const key=[x.station,x.dsp,x.route,x.zip].join('\u0001');agg.set(key,(agg.get(key)||0)+x.current)}
+ const rows=[...agg].map(([key,current])=>[...key.split('\u0001'),current]);
+ if(rows.length<15000){safePut(V4_SNAPSHOT,{date:$('forecastDate').value,rows});$('quickStatus').textContent='✓ Last forecast baseline saved / 已保存上一份汇总货量，手机可快速预报。'}
+}
+function v4StartQuick(){
+ const snap=safeJSON(safeGet(V4_SNAPSHOT),null);
+ if(!snap?.rows?.length){alert('No baseline saved / 尚无历史预报基准，请先完成一次正式预报。');return}
+ const n=snap.rows;
+ volumeSchema={station:'Station',dsp:'DSP',route:'Route',zip:'ZIP',count:'Count'};
+ volumeData=n.map(([Station,DSP,Route,ZIP,Count])=>({Station,DSP,Route,ZIP,Count}));
+ useQuickBaseline=true;volumeMeta={sheetName:'Saved aggregated baseline',headerRow:1};
+ $('volInfo').textContent=`⚠ Quick Forecast / 快速预报：使用 ${snap.date||'日期未知'} 的已保存基准，不是今天实际货量。`;
+ $('volUpload').classList.add('success');stationSelected=new Set();fineTuneByStation={};
+ renderStations();renderStationInputs();renderDSPControls();invalidate();
+}
+async function v4HandleActual(file){
+ try{
+  const parsed=await readSpreadsheetSmart(file,'actual');
+  const actual=v4SummedActual(parsed.rows,parsed.schema);
+  if(actual.total<=0)throw new Error('No Station + Route rows / 无法识别有效站点与路区记录');
+  recentActual=actual;lastActualFile=file.name;
+  $('actualStatus').textContent=`✓ ${file.name}: ${fmt(actual.total)} valid packages / 有效票数，${fmt(actual.duplicates)} duplicates skipped / 重复运单已排除，${fmt(actual.realZip)} verified parcel ZIP / 真实逐票邮编。`;
+  v4RenderAccuracy();
+ }catch(e){$('actualStatus').textContent='Actual upload failed / 实际货量读取失败：'+e.message;alert('Actual upload failed / 实际货量读取失败：'+e.message)}
+}
+function v4RenderAccuracy(){
+ const box=$('accuracyTable'),header='<table><thead><tr><th>Station<br><small>站点</small></th><th>DSP<br><small>配送商</small></th><th>Route<br><small>路区</small></th><th class="num">Forecast<br><small>预报</small></th><th class="num">Actual<br><small>实际</small></th><th class="num">Difference<br><small>差值</small></th><th class="num">Error %<br><small>误差率</small></th></tr></thead><tbody>';
+ const pick=$('accuracyForecastSelect').value;
+ const saved=v4SavedForecasts().find(x=>x.date===pick);
+ if((!lastResult&&!saved)||!recentActual){box.innerHTML='<div class="empty">Select Forecast and Upload Actual / 选择预报并上传同一天的实际货量。</div>';return}
+ const f=new Map(),a=new Map();
+ if(saved){for(const [st,dsp,route,forecast] of saved.rows){const k=[st,dsp,route].join('\u0001');f.set(k,(f.get(k)||0)+forecast)}}
+ else for(const x of lastResult.detail){const k=[x.station,x.dsp,x.route].join('\u0001');f.set(k,(f.get(k)||0)+x.forecast)}
+ for(const x of recentActual.routes){const d=x.dsp,k=[x.station,d,x.route].join('\u0001');a.set(k,(a.get(k)||0)+x.current)}
+ const keys=[...new Set([...f.keys(),...a.keys()])].sort();let totalForecast=0,totalActual=0,absolute=0;
+ const rows=keys.map(k=>{const [st,dsp,rt]=k.split('\u0001');const fore=f.get(k)||0,actual=a.get(k)||0,delta=fore-actual;totalForecast+=fore;totalActual+=actual;absolute+=Math.abs(delta);
+  const err=actual?100*delta/actual:null;
+  return `<tr><td>${esc(st)}</td><td><b>${esc(dsp)}</b></td><td>${esc(rt)}</td><td class="num">${fmt(fore)}</td><td class="num">${fmt(actual)}</td><td class="num" style="color:${Math.abs(delta)>actual*.2?'#c44b52':'#476f81'}">${delta>=0?'+':''}${fmt(delta)}</td><td class="num">${err===null?'—':(err>=0?'+':'')+err.toFixed(1)+'%'}</td></tr>`}).join('');
+ box.innerHTML=header+rows+'</tbody></table>';
+ const wape=totalActual?100*absolute/totalActual:0;
+ $('accuracySummary').innerHTML=`<div class="statusCard"><small>Compared Forecast / 对比预报量</small><b>${fmt(totalForecast)}</b></div><div class="statusCard"><small>Compared Actual / 对比实际量</small><b>${fmt(totalActual)}</b></div><div class="statusCard"><small>Route WAPE / 路区绝对百分比误差</small><b>${wape.toFixed(1)}%</b></div>`;
+}
+function v4SaveActualCalibration(){
+ if(!recentActual){alert('Upload Actual first / 请先上传实际货量。');return}
+ // Only valid measured Route counts and genuine package ZIPs, no tracking numbers.
+ calibrationDays=calibrationDays.filter(x=>x.file!==lastActualFile);
+ calibrationDays.push({file:lastActualFile,date:$('forecastDate').value,routes:recentActual.routes,zipRoutes:recentActual.zipRoutes});
+ calibrationDays=calibrationDays.slice(-14);
+ const ok=v4SaveSettings(false);
+ const old=safeJSON(safeGet(V4_ACTUALS),[]).filter(x=>x.date!==$('forecastDate').value);
+ old.push({date:$('forecastDate').value, file:lastActualFile, routes:recentActual.routes});safePut(V4_ACTUALS,old.slice(-30));
+ $('actualStatus').textContent+=ok?' ✓ Aggregated Route/ZIP ratios saved locally for future forecasts.':' ⚠ Local storage failed / 本机保存失败，请使用导出设置。';
+}
+function v4RevokeImages(){for(const url of imageURLCache)URL.revokeObjectURL(url);imageURLCache=[];$('imageCards').innerHTML=''}
+async function v4CreateImages(){
+ if(!lastResult){alert('Generate Forecast first / 请先生成预报。');return}
+ v4RevokeImages();
+ const groups=buildDSPImageGroups();$('imagesStatus').textContent=`Creating ${groups.length} DSP PNG previews…`;
+ for(const group of groups){
+  const blob=await canvasToBlob(drawDSPCanvas(group)),url=URL.createObjectURL(blob),name=`${safeFileName(group.dsp)}_PreAlarm_${$('forecastDate').value||'Forecast'}.png`;
+  imageURLCache.push(url);
+  const card=document.createElement('article');card.className='imageCard';
+  const total=[...group.routes.values()].flat().reduce((a,x)=>a+x.forecast,0);
+  const head=document.createElement('div');head.className='imageCardHead';head.innerHTML=`<span>${esc(group.dsp)}</span><span>${fmt(total)} 票 · ${fmt(driversNeeded(total))} drivers</span>`;card.appendChild(head);
+  const img=document.createElement('img');img.src=url;img.alt='DSP Forecast '+group.dsp;img.loading='lazy';img.onclick=()=>window.open(url,'_blank');card.appendChild(img);
+  const acts=document.createElement('div');acts.className='imageCardActions';
+  const share=document.createElement('button');share.className='btn ghost sm';share.textContent='Share PNG / 分享图片';share.onclick=async()=>{
+   const file=new File([blob],name,{type:'image/png'});
+   try{if(navigator.canShare?.({files:[file]})&&navigator.share){await navigator.share({files:[file],title:group.dsp+' Pre Alarm'})}else v4DownloadBlob(blob,name)}catch(e){if(e.name!=='AbortError'){v4DownloadBlob(blob,name)}}
+  };
+  const copy=document.createElement('button');copy.className='btn sm';copy.textContent='Copy PNG / 复制图片';copy.onclick=async()=>{
+   try{if(!navigator.clipboard?.write||typeof ClipboardItem==='undefined')throw new Error('Image clipboard not supported / 浏览器不支持图片剪贴板');await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);copy.textContent='✓ Copied / 已复制';setTimeout(()=>copy.textContent='Copy PNG / 复制图片',1200)}catch(e){alert('Copy unavailable here: '+e.message+'. Use Share PNG / 分享图片 or Download instead.')}
+  };
+  const save=document.createElement('button');save.className='btn sm';save.textContent='Download / 下载';save.onclick=()=>v4DownloadBlob(blob,name);
+  acts.append(share,copy,save);card.appendChild(acts);$('imageCards').appendChild(card);
+  await new Promise(r=>setTimeout(r,0));
+ }
+ $('imagesStatus').textContent=`✓ ${groups.length} DSP PNG previews ready / 已生成 ${groups.length} 张 DSP 图片，无需解压 ZIP。`;
+}
+function v4SwitchTab(tab){
+ activeTab=tab;
+ document.querySelectorAll('#tabs .tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+ for(const t of ['detail','unmapped','accuracy','images'])$(t+'View').classList.toggle('hidden',t!==tab);
+ if(tab==='images'&&lastResult&&!$('imageCards').children.length)v4CreateImages();
+ if(tab==='accuracy')v4RenderAccuracy();
+}
+function v4Init(){
+ $('forecastDate').value ||= new Date().toLocaleDateString('en-CA');
+ v4RestoreSettings();v4RenderForecastOptions();
+ $('forecastModes').onclick=e=>{const b=e.target.closest('.modeBtn');if(!b)return;forecastMode=b.dataset.mode;
+  if(forecastMode==='dynamic')$('historyDetails').open=true;if(forecastMode==='manual')$('dspSettingsDetails').open=true;
+  renderDSPControls();invalidate();v4SaveSettings(false)};
+ $('tabs').onclick=e=>{const b=e.target.closest('.tab');if(b)v4SwitchTab(b.dataset.tab)};
+ $('saveAssignmentBtn').onclick=v4SaveRouteAssignment;
+ $('deleteAssignmentBtn').onclick=()=>{const st=canonicalStation($('assignStation').value),r=routeCode($('assignRoute').value);if(!st||!r)return;
+  delete routeOwnerRules[st+'\u0001'+r];v4SaveSettings(false);v4RenderAssignments();invalidate()};
+ $('clearRouteTuneBtn').onclick=()=>{for(const k of Object.keys(routeTweaks))delete routeTweaks[k];v4SaveSettings();v4RenderRouteTweaks();invalidate()};
+ $('settingsExportBtn').onclick=v4ExportSettings;
+ $('saveSettingsBtn').onclick=()=>{const ok=v4SaveSettings(true);$('diag').textContent=ok?'✓ Settings saved to this browser. Use Export Settings / 导出设置 for other devices.':'⚠ Browser storage unavailable; use Export Settings / 导出设置.'};
+ $('settingsImportBtn').onclick=()=>$('settingsImportFile').click();$('settingsImportFile').onchange=e=>e.target.files?.[0]&&v4ImportSettings(e.target.files[0]);
+ $('quickBtn').onclick=v4StartQuick;
+ $('actualInput').onchange=e=>e.target.files?.[0]&&v4HandleActual(e.target.files[0]);
+ $('accuracyForecastSelect').onchange=v4RenderAccuracy;
+ $('saveActualCalibrationBtn').onclick=v4SaveActualCalibration;
+ $('clearActualBtn').onclick=()=>{recentActual=null;lastActualFile='';$('actualStatus').textContent='Actual cleared / 已清除真实货量。';v4RenderAccuracy()};
+ $('showImagesBtn').onclick=v4CreateImages;$('refreshImagesBtn').onclick=v4CreateImages;
+ $('globalAddVol').addEventListener('change',()=>v4SaveSettings(false));
+ $('driverCap').addEventListener('change',()=>v4SaveSettings(false));
+ $('forecastDate').addEventListener('change',()=>v4SaveSettings(false));
+ // Run result and preserve the last non-sensitive Route/ZIP aggregate for quick mobile access.
+ const oldRun=$('runBtn').onclick;
+ $('runBtn').onclick=()=>{try{const res=buildForecast();if(!res.current){alert('No eligible mapped packages / 没有可预测的有效匹配货量，请检查映射表和异常信息。');return}
+   renderResult(res);v4SaveSettings(false);v4StoreSnapshot(res);v4SaveForecastRecord(res);if(window.innerWidth<821)document.querySelector('.main').scrollIntoView({behavior:'smooth'});
+  }catch(e){$('diag').className='message bad';$('diag').textContent=e.message;console.error(e);alert('Forecast failed / 生成预报失败：'+e.message)}};
+ $('mobileGenerateBtn').onclick=()=>$('runBtn').click();
+ const oldReset=$('resetBtn').onclick;
+ $('resetBtn').onclick=()=>{useQuickBaseline=false;recentActual=null;v4RevokeImages();oldReset();forecastMode='route';renderDSPControls();$('actualStatus').textContent='No Actual file loaded / 尚未上传实际货量。';$('reconciliation').innerHTML='';$('routeWarnings').textContent='Forecast diagnostics appear here.'};
+ const oldImageBtn=$('imageBtn').onclick;
+ $('imageBtn').onclick=oldImageBtn;
+ v4SwitchTab('detail');
+}
+// Override legacy file handlers to cache non-personal mapping and clear stale previews.
+const v4BaseHandleVolume=handleVolumeBase;
+async function v4HandleVolume(file){useQuickBaseline=false;v4RevokeImages();await v4BaseHandleVolume(file);}
+const v4BaseHandleMap=handleMapBase;
+async function v4HandleMap(file){await v4BaseHandleMap(file);if(mapData.length&&zipMap.size)v4SaveSettings(true);}
+// Grouped on-screen view exactly matches Copy and the per-DSP PNG layout.
+function renderDetail(){
+ const body=$('detailBody');body.innerHTML='';
+ const rows=detailPlanningRows();
+ if(!rows.length){body.innerHTML='<tr><td colspan="5"><div class="empty">No matching Route/ZIP rows / 未找到符合条件的路区/邮编数据。</div></td></tr>';return}
+ const dspMap=new Map();
+ for(const x of rows){
+   if(!dspMap.has(x.dsp))dspMap.set(x.dsp,new Map());
+   const rm=dspMap.get(x.dsp);if(!rm.has(x.route))rm.set(x.route,[]);rm.get(x.route).push(x);
+ }
+ for(const [dsp,rm] of dspMap){
+  const dspCount=[...rm.values()].flat().reduce((s,x)=>s+x.forecast,0);
+  const t=document.createElement('tr');t.className='rowDSP';t.innerHTML=`<td>${esc(dsp)}</td><td></td><td></td><td class="num">${fmt(dspCount)}</td><td class="num">${fmt(driversNeeded(dspCount))}</td>`;body.appendChild(t);
+  for(const [route,zs] of rm){
+   const n=zs.reduce((s,x)=>s+x.forecast,0);
+   const r=document.createElement('tr');r.className='rowRoute';r.innerHTML=`<td></td><td>${esc(route)}</td><td></td><td class="num">${fmt(n)}</td><td class="num">${fmt(driversNeeded(n))}</td>`;body.appendChild(r);
+   for(const z of zs){const tr=document.createElement('tr');tr.className='rowZip';tr.innerHTML=`<td></td><td></td><td>${esc(z.zip)}</td><td class="num">${fmt(z.forecast)}</td><td></td>`;body.appendChild(tr)}
+  }
+ }
+}
+// Override renderResult with reconciliation, route editor and snapshot support.
+const v4BaseRenderResult=renderResultLegacy;
+function renderResult(result){v4BaseRenderResult(result);v4ConfidenceHTML(result);v4RenderRouteTweaks();v4RevokeImages();if(recentActual)v4RenderAccuracy()}
+
+const v4LegacyUpdateReady=updateReadyBase;
+function updateReady(){v4LegacyUpdateReady();const btn=$('mobileGenerateBtn');if(btn)btn.disabled=$('runBtn').disabled;}
+
+async function handleVolume(file){return v4HandleVolume(file)}
+async function handleMap(file){return v4HandleMap(file)}
+
 function setupDrop(zone,input,handler){zone.onclick=()=>input.click();zone.addEventListener("dragover",e=>{e.preventDefault();zone.classList.add("drag")});zone.addEventListener("dragleave",()=>zone.classList.remove("drag"));zone.addEventListener("drop",e=>{e.preventDefault();zone.classList.remove("drag");const f=e.dataTransfer.files?.[0];if(f)handler(f)});input.onchange=()=>input.files?.[0]&&handler(input.files[0]);}
 setupDrop($("volUpload"),$("volInput"),handleVolume); setupDrop($("mapUpload"),$("mapInput"),handleMap);
 window.addEventListener("dragover",e=>e.preventDefault());window.addEventListener("drop",e=>e.preventDefault());window.addEventListener("dragenter",()=>$("overlay").classList.add("show"));window.addEventListener("dragleave",e=>{if(e.clientX===0&&e.clientY===0)$("overlay").classList.remove("show")});window.addEventListener("drop",()=>$("overlay").classList.remove("show"));
-$("runBtn").onclick=()=>{const result=buildForecast();if(!result.current){alert("No mapped packages found for the selected station(s). Check the station selection and ZIP mapping.");return;}renderResult(result)};
+$("runBtn").onclick=()=>{const result=buildForecast();if(!result.current){alert("No mapped packages / 所选站点没有匹配货量，请检查站点选择和映射表。");return;}renderResult(result)};
 $("resetBtn").onclick=()=>{volumeData=[];mapData=[];zipMap=new Map();mappingConflicts=[];volumeSchema={};mapSchema={};volumeMeta=null;mapMeta=null;stationSelected=new Set();fineTuneByStation={};globalAddUnits=1.0;lastResult=null;forecastMode="global";dspAdjustment={};historyDays=[];dspBaseCache={};$("historyInput").value="";$("historyStatus").textContent="No historical files loaded.";$("fllFreightEnabled").checked=true;$("fllFreightPercent").value="17.28";$("globalAddVol").value="1.0";$("volInput").value="";$("mapInput").value="";$("volUpload").classList.remove("success");$("mapUpload").classList.remove("success");$("volInfo").textContent="Waiting for file";$("mapInfo").textContent="Required · used to match ZIP → DSP / Route automatically.";renderStations();renderStationInputs();renderDSPControls();clearOutput();updateReady();$("diag").textContent="Upload a volume file to begin."};
 $("fllFreightEnabled").onchange=()=>invalidate();
 $("fllFreightPercent").oninput=()=>invalidate();
@@ -1178,11 +1604,73 @@ $("clearHistoryBtn").onclick=clearHistory;
 $("clearDSPBiasBtn").onclick=()=>{dspAdjustment={};renderDSPControls();invalidate();};
 $("driverCap").oninput=()=>{if(lastResult){renderDetail();}};
 $("searchInput").oninput=()=>{if(lastResult){renderDetail();renderUnmapped()}};
-$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(currentTSV());const old=$("copyBtn").textContent;$("copyBtn").textContent="Copied";setTimeout(()=>$("copyBtn").textContent=old,1100)}catch(e){alert("Copy failed. Your browser may block clipboard access for local files.")}};
+$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(currentTSV());const old=$("copyBtn").textContent;$("copyBtn").textContent="Copied / 已复制";setTimeout(()=>$("copyBtn").textContent=old,1100)}catch(e){alert("Copy failed / 复制失败，浏览器可能禁止本地文件访问剪贴板。")}};
 $("exportBtn").onclick=exportExcel;
 $("imageBtn").onclick=exportImages;
 $("tabs").onclick=e=>{const btn=e.target.closest(".tab");if(!btn)return;activeTab=btn.dataset.tab;document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===btn));["detail","unmapped"].forEach(t=>$(t+"View").classList.toggle("hidden",t!==activeTab));};
-renderStations();renderStationInputs();renderDSPControls();updateGlobalEquiv();updateReady();
+renderStations();renderStationInputs();renderDSPControls();updateGlobalEquiv();updateReady();v4Init();
+
+// All on-screen controls are English + Chinese. Exported DSP PNG canvases and
+// Excel/clipboard templates intentionally retain their existing English + Spanish headings.
+const UI_TRANSLATION_MAP = new Map([
+  ["No historical files loaded.","No historical files loaded / 未上传历史货量。"],
+  ["Upload a volume file to begin.","Upload Volume / 请上传货量文件开始。"],
+  ["Forecast diagnostics appear here.","Forecast diagnostics / 预测异常与数据检查信息显示在此。"],
+  ["No Actual file loaded.","No Actual file loaded / 尚未上传实际货量。"],
+  ["Run forecast, then generate image previews.","Run Forecast, then Preview / 请先生成预报再预览图片。"],
+  ["Saved ZIP Mapping","Saved ZIP Mapping / 已保存的邮编映射表"],
+  ["No matching Route/ZIP rows.","No matching Route/ZIP rows / 无匹配路区或邮编数据。"],
+  ["Current","Current / 当前"],["Forecast","Forecast / 预报"],["Actual","Actual / 实际"],
+  ["Route","Route / 路区"],["DSP","DSP / 配送商"],
+  ["ZIP","ZIP / 邮编"],["Type","Type / 类型"],["Details","Details / 详情"],
+  ["Recommended Drivers","Recommended Drivers / 推荐司机数量"],
+  ["Copy","Copy / 复制"],["Copied","Copied / 已复制"],
+  ["Share PNG","Share PNG / 分享图片"],["Copy PNG","Copy PNG / 复制图片"],
+  ["Download","Download / 下载"],
+  ["Lock","Lock / 锁定"],["Edit","Edit / 编辑"],
+]);
+function localizeUIMessage(s){
+  if(!s || /[\u3400-\u9fff]/.test(s))return s;
+  const t=s.trim(); if(!t)return s;
+  const direct=UI_TRANSLATION_MAP.get(t);
+  if(direct)return s.replace(t,direct);
+  if(/^Creating \d+ DSP PNG previews/.test(t))return s.replace(t,t+' / 正在生成 DSP 图片预览');
+  if(/^✓ \d+ DSP images ready/.test(t))return s.replace(t,t+' / 图片预览已完成，无需解压 ZIP');
+  if(/^Saved baseline:/.test(t))return s.replace(t,t+' / 已有可供手机快速预报的历史基准');
+  if(/^✓ .*valid packages/.test(t))return s.replace(t,t+' / 实际货量文件读取完成');
+  if(/^\d+ station\(s\) ≥/.test(t))return s.replace(t,t+' / 已选站点');
+  if(/^⚠ .*selected parcels unresolved/.test(t))return s.replace(t,t+' / 有未识别包裹，未强行分配 DSP');
+  if(/^\d+ packages use historical ZIP\/Route splits/.test(t))return s.replace(t,t+' / 部分路区使用历史比例估算');
+  if(/^Quick forecast:/.test(t))return s.replace(t,t+' / 快速模式仅供历史估算');
+  if(/^Input \d/.test(t) && t.includes('mapped'))return s.replace(t,t+' / 输入、匹配与预测总量已核对');
+  if(/^✓ Loaded \d+ historical/.test(t))return s.replace(t,t+' / 历史数据已加载');
+  if(/^Creating \d+\/\d+/.test(t))return s.replace(t,t+' / 正在生成图片');
+  if(/^\d+ file packages outside selected stations/.test(t))return s.replace(t,t+' / 未选站点按原全网倍率处理，增量不重复分配');
+  return s;
+}
+function localizeUINode(n){
+  if(n.nodeType!==Node.TEXT_NODE)return;
+  const p=n.parentElement;
+  if(!p||p.closest('script,style,textarea,.thBi,#detailBody,#unmappedBody,.rowZip,.imageCardHead'))return;
+  const v=n.nodeValue,translated=localizeUIMessage(v);
+  if(v!==translated)n.nodeValue=translated;
+}
+function localizeUITree(root){
+  if(root.nodeType===Node.TEXT_NODE){localizeUINode(root);return;}
+  if(root.nodeType!==Node.ELEMENT_NODE)return;
+  if(root.matches('script,style,textarea,.thBi,#detailBody,#unmappedBody,.rowZip'))return;
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+  let n;while((n=walker.nextNode()))localizeUINode(n);
+}
+localizeUITree(document.body);
+const uiTranslatorObserver=new MutationObserver(records=>{
+  for(const record of records){
+    if(record.type==='characterData')localizeUINode(record.target);
+    else for(const n of record.addedNodes)localizeUITree(n);
+  }
+});
+uiTranslatorObserver.observe(document.body,{subtree:true,characterData:true,childList:true});
+
 </script>
 </body>
 </html>
